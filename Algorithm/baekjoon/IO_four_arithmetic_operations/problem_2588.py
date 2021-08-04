@@ -1,0 +1,10 @@
+value = int(input())
+[a, b, c] = input()
+first = value * int(c)
+second = value * int(b)
+third = value * int(a)
+print(first)
+print(second)
+print(third)
+print((first * 10 ** 0) + (second * 10 ** 1) + (third * 10 ** 2))
+
