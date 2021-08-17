@@ -11,4 +11,8 @@
  > 
 
 
-[chapter 01장 - 지식 탐구](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chaprer_01)
+[chapter 01~04장 - (지식탐구, 의사소통과 언어 사용, 모델과 구현의 연계, 도메인의 격리)](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chaprer_01)
+
+[chapter 05장 - 소프트웨어에서 표한되는 모델](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_05)
+
+[chapter 06장 - 도메인 객체의 생명주기](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_06)
