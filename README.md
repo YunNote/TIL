@@ -30,18 +30,18 @@
 > 그날 그날 내게 필요한 공부에 대해 정리하는 TIL 입니다.
 
 
-## [알고리즘](https://github.com/YunNote/TIL/tree/master/Algorithm)
- - [백준 문제 풀이](https://github.com/YunNote/TIL/tree/master/Algorithm/baekjoon)
- - [leetCode 문제 풀이](https://github.com/YunNote/TIL/tree/master/Algorithm/leetCode)
+## 💻 [알고리즘](https://github.com/YunNote/TIL/tree/master/Algorithm)
+ -  🔨 [백준 문제 풀이](https://github.com/YunNote/TIL/tree/master/Algorithm/baekjoon)
+ -  🔨 [leetCode 문제 풀이](https://github.com/YunNote/TIL/tree/master/Algorithm/leetCode)
 
 <hr>
 
-## [Domain Driven Design](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign)
- - [chapter 01 ~ chapter 04](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_01_to_04)
- - [chapter 05](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_05)
- - [chapter 06](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_06)
+## 💻 [Domain Driven Design](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign)
+ -  🔨 [chapter 01 ~ chapter 04](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_01_to_04)
+ -  🔨 [chapter 05](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_05)
+ -  🔨 [chapter 06](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_06)
 
 <hr>
 
-## [Design Pattern](https://github.com/YunNote/TIL/tree/master/DesignPattern)
- - [옵저버 패턴 (Observer Pattern)](https://github.com/YunNote/TIL/tree/master/DesignPattern/ObserverPattern)
+## 💻 [Design Pattern](https://github.com/YunNote/TIL/tree/master/DesignPattern)
+ -  🔨 [옵저버 패턴 (Observer Pattern)](https://github.com/YunNote/TIL/tree/master/DesignPattern/ObserverPattern)
