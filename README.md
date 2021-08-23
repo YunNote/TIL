@@ -44,7 +44,7 @@
 <hr>
 
 ## 💻 [JPA](https://github.com/YunNote/TIL/tree/master/JPA)
- -  🔨 [JPA란](https://github.com/YunNote/TIL/tree/master/DesignPattern/ObserverPattern)
+ -  🔨 [JPA란](https://github.com/YunNote/TIL/blob/master/JPA/01_JPA%EB%9E%80.md)
 
 <hr>
 
