@@ -43,8 +43,13 @@
 
 <hr>
 
+## 💻 [Network](https://github.com/YunNote/TIL/tree/master/Network)
+
+<hr>
+
 ## 💻 [JPA](https://github.com/YunNote/TIL/tree/master/JPA)
- -  🔨 [JPA란](https://github.com/YunNote/TIL/blob/master/JPA/01_JPA%EB%9E%80.md)
+-  🔨 [JPA란](https://github.com/YunNote/TIL/blob/master/JPA/01_JPA%EB%9E%80.md)
+-  🔨 [JPA 사용해보기](https://github.com/YunNote/TIL/tree/master/JPA/02_JPA%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0)
 
 <hr>
 
