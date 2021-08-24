@@ -33,9 +33,6 @@
 이러한 상황때문에 송신 측에서 수신 측으로 패킷을 보낼 때는 각 패킷에 순서를 부여하여 전송합니다. <br>
 이렇게 되면 번호에 맞춰 정렬하면 되니 늦게 도착한 패킷도 원래의 위치로 돌아갈 수 있다.
 
-<figure>
-    <img src="./images/packet.jpeg" alt="" style="width: 200px;" />
-    <figcaption>모두의 네트워크 packet 이미지 참고</figcaption>
-</figure>
+<img src="./images/packet.jpeg" alt="" style="width: 200px;" />
 
 ---
