@@ -34,7 +34,7 @@
 이렇게 되면 번호에 맞춰 정렬하면 되니 늦게 도착한 패킷도 원래의 위치로 돌아갈 수 있다.
 
 <figure>
-    <img src="./images/packet.jpeg" alt="모두의 네트워크 packet 이미지 참고 ">
+    <img src="./images/packet.jpeg" alt="모두의 네트워크 packet 이미지 참고 " style="width: 500px;">
 </figure>
 
 ---
