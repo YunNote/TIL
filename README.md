@@ -44,6 +44,8 @@
 <hr>
 
 ## 💻 [Network](https://github.com/YunNote/TIL/tree/master/Network)
+-  🔨 [Network와 Packet](https://github.com/YunNote/TIL/blob/master/Network/Lesson_01.md)
+-  🔨 [bit와 byte, LAN 과 WAN](https://github.com/YunNote/TIL/blob/master/Network/Lesson_02_to_03.md)
 
 <hr>
 
