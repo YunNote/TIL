@@ -23,3 +23,21 @@
 
 <img src="./images/osi7layer.png" alt="" width="450" />
 
+---
+
+## 😊 TCP/IP 모델 
+> TCP/IP는 컴퓨터 사이의 통신 표준 및 네트워크의 라우팅 및 상호연결에 대한 자세한 규칙을 지정하는 프로토콜 스위트입니다.<br>
+> TCP/IP 는 총 4계층으로 이루어져 있다.
+>
+> <strong>1계층</strong> `네트워크 접속 계층` - 물리계층과, 데이터 링크 계층<br>
+> 하드웨어 적인 요소와 관련되는 모든것을 지원하는 계층 <br>
+> `Protocal로는 Ehternet, Token Ring, PPP`<br><br>
+> <strong>2계층</strong> `인터넷 계층` - 네트워크 계층<br>
+>  통신 노드간의 IP 패킷을 전송하는 기능 및 라우팅 기능을 담당  <br>
+> `Protocal로는 IP, ARP, RARP, ICMP, OSPF`<br><br>
+> <strong>3계층</strong> `전송 계층` - 전송 계층 <br>
+> 통신 노드 간의 연결을 제어하고, 자료의 송수신을 담당<br>
+> `Protocal로는 TCP, UDP`<br><br>
+> <strong>4계층</strong> `응용 계층` - 세션 계층, 표현 계층, 응용 계층<br>
+> TCP/IP 기반의 응용 프로그램을 구분할때 사용 <br>
+> `Protocal로는 HTTP, FTP, Telnet, DNS, SMTP`<br>
