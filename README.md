@@ -60,5 +60,10 @@
 <hr>
 
 ## 💻 [React Native](https://github.com/YunNote/TIL/tree/master/ReactNative)
- -  🔨 [리액트 네이티브 환경 설정](https://github.com/YunNote/TIL/tree/master/ReactNative/Install_ReactNative_Manual)
- -  🔨 [리액트 네이티브 CLI 설치 및 실행](https://github.com/YunNote/TIL/tree/master/ReactNative/Install_ReactNative_CLI)
+-  🔨 [리액트 네이티브 환경 설정](https://github.com/YunNote/TIL/tree/master/ReactNative/Install_ReactNative_Manual)
+-  🔨 [리액트 네이티브 CLI 설치 및 실행](https://github.com/YunNote/TIL/tree/master/ReactNative/Install_ReactNative_CLI)
+
+<hr>
+
+## 💻 [정리](https://github.com/YunNote/TIL/tree/master/정리)
+-  🔨 [SOLID](https://github.com/YunNote/TIL/tree/master/정리/SOLID)
