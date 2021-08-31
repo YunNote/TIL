@@ -70,3 +70,4 @@
 
 ## 💻 [정리](https://github.com/YunNote/TIL/tree/master/정리)
 -  🔨 [SOLID](https://github.com/YunNote/TIL/tree/master/정리/SOLID)
+-  🔨 [hashCode와 equals](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/hashCode%20%EC%99%80%20equals)
