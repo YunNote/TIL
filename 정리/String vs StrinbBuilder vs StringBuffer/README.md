@@ -57,7 +57,53 @@ String class를 사용하여 다음과 같이 + 연산자를 통해 추가하게
 
 <br>
 
+## 😊 String vs StringBuffer, StringBuilder 속도 차이
+
+---
+
+```java
+public static void test1(){
+    StringBuffer sb = new StringBuffer();
+
+    long st = System.currentTimeMillis();
+
+    for (int i = 0; i< 1_000_000; i++) {
+        sb.append(i);
+    }
+    long et = System.currentTimeMillis();
+    System.out.println("StringBuffer :: " + (et - st) + "ms");
+}
+
+public static void test2(){
+    String sb = "";
+
+    long st = System.currentTimeMillis();
+    for (int i = 0; i< 1_000_000; i++) {
+        sb += i;
+    }
+    long et = System.currentTimeMillis();
+
+    System.out.println("String :: " + (et - st) + "ms");
+}
+
+// 실행결과
+//StringBuffer :: 23ms
+//String :: 340321ms
+```
+
+해당 메서드들은 i값을 100만번 Loop를 돌며 추가하는 내용입니다.
+실행결과는 다음과 같았습니다. StringBuffer가 String 보다 약 14,800배 빠른것을 확인할 수 있었습니다. 
+
+
+<br>
+
 ## 😊 StringBuffer와 StringBuilder의 차이는 ?
 
 ---
 
+StringBuffer와 StringBuilder의 차이는 `동기화를 지원하느냐에 대한 유무`입니다.<br>
+
+`StringBuffer` - StringBuffer는 동기화를 지원하기때문에 멀티쓰레드 환경에서 사용하기에 안전하다는점이 있습니다. 즉, Thread-safe하다는 의미입니다.
+
+`StringBuilder` - StringBuilder는 동기화를 지원하지 않기 떄문에 멀티쓰레드에서 안전하게 사용 할 수 없다. 하지만 그말은 동기화를 고려하지 않아된다는 의미로
+단일 쓰레드환경에서의 성능은 StringBuffer보다 뛰어나다.
