@@ -42,4 +42,22 @@ String class를 사용하여 다음과 같이 + 연산자를 통해 추가하게
 
 ---
 
+`String` 이 있는데 `StringBuffer`와 `StringBuilder`는 왜있을까란 생각을 하곤했습니다.<br>
+위의 세개의 Class에 대해 자세하게 알기전에는 String이 더 편하고 익숙하니 String 만 사용했었습니다.
+
+그렇다면 StringBuffer와 StringBuilder는 기존의 String 과 차이점이 뭘까요.
+
+1. 바로 `가변(Mutable)`속성을 가진다는 것입니다.
+2. `+`연산자가 아닌 `append`, `delete`와 같은 메서드를 통해 값을  변경합니다.
+
+<img src="./StringBuilderBuffer.jpg" alt="" width="450" />
+
+>위의 이미지에 보이는것처럼 StringBuffer와 StringBuilder는 처음에 가지고 있던 메모리의 객체내의 문자열을 직접 변경하는 것입니다.
+따라서 문자열이 추가될때마다 새로운 객체를 만들지 않기때문에 문자열의 추가 or 수정, 삭제가 빈번하게 발생한다면 String 보다는 StringBuffer와 StringBuiler를 사용하기를 권장합니다.
+
+<br>
+
+## 😊 StringBuffer와 StringBuilder의 차이는 ?
+
+---
 
