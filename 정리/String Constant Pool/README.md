@@ -30,6 +30,8 @@ String Constant Pool은 String 리터럴로 생성한 객체의 값이(ex. YunNo
 
 그렇다면 동일한 문자열을 가지고 있는 리터럴이면 동일설 비교를 하였을때 true를 반환하는지 확인해보자.
 
+---
+
 #### 리터럴을 통한 String 객체 생성
 
 ```java
@@ -41,7 +43,9 @@ System.out.println(name == name2); // true를 반환
 
 <br>
 
-#### new 연산자를 통한 String 객체 생성 
+---
+
+#### new 연산자를 통한 String 객체 생성
 
 ```java
 String nickname = new String("Yundle");
