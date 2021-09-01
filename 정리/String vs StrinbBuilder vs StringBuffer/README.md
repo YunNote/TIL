@@ -13,7 +13,7 @@
 
 String은 불변(immutable)의 속성을 갖습니다. 이게 무슨말인지 확인해보겠습니다
 
-<img src="imagesacket.jpeg" alt="" width="450" />
+<img src="./String_sample.jpg" alt="" width="450" />
 
 위의 예제는 name이라는 변수에 `YunNote`라는 문자열을 넣는 코드입니다 .
 그다음은 name이라는 값에 `!!`라는 문자열 을 추가하는 코드입니다. 
@@ -34,6 +34,12 @@ String class를 사용하여 다음과 같이 + 연산자를 통해 추가하게
 
 `단점`
  - 문자열의 추가, 수정, 삭제 등의 연산이 자주 일어나게 되는경우 Memory에 항상 새로운 객체를 생성하기 때문에 힙 메모리가 부족하여 성능에 영향을 미칠 수 있다.
- 
+
+
+<br>
+
+## 😊 StringBuffer와 StringBuilder 란 
+
+---
 
 
