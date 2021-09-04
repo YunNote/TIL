@@ -54,6 +54,9 @@
 ## 💻 [JPA](https://github.com/YunNote/TIL/tree/master/JPA)
 -  🔨 [JPA란](https://github.com/YunNote/TIL/blob/master/JPA/01_JPA%EB%9E%80.md)
 -  🔨 [JPA 사용해보기](https://github.com/YunNote/TIL/tree/master/JPA/02_JPA%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0)
+-  🔨 [EntityManagerFactory와 EntityManager](https://github.com/YunNote/TIL/tree/master/JPA/03_%EC%98%81%EC%86%8D%EC%84%B1%20%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8)
+
+
 
 <hr>
 
@@ -70,6 +73,7 @@
 
 ## 💻 [정리](https://github.com/YunNote/TIL/tree/master/정리)
 -  🔨 [SOLID](https://github.com/YunNote/TIL/tree/master/정리/SOLID)
+-  🔨 [DTO를 사용했을때 얻을수 있는 이점이 뭘까 (개인적인 생각)](https://github.com/YunNote/TIL/tree/master/정리/SOLID)
 -  🔨 [hashCode와 equals](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/hashCode%20%EC%99%80%20equals)
 -  🔨 [String vs StringBuilder vs StringBuffer](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/String%20vs%20StrinbBuilder%20vs%20StringBuffer)
 -  🔨 [String Constant Pool](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/String%20Constant%20Pool)
