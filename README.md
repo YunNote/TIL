@@ -73,7 +73,7 @@
 
 ## 💻 [정리](https://github.com/YunNote/TIL/tree/master/정리)
 -  🔨 [SOLID](https://github.com/YunNote/TIL/tree/master/정리/SOLID)
--  🔨 [DTO를 사용했을때 얻을수 있는 이점이 뭘까 (개인적인 생각)](https://github.com/YunNote/TIL/tree/master/정리/SOLID)
+-  🔨 [DTO를 사용했을때 얻을수 있는 이점이 뭘까 (개인적인 생각)](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/DTO_%EA%B0%9C%EC%9D%B8_%EC%83%9D%EA%B0%81)
 -  🔨 [hashCode와 equals](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/hashCode%20%EC%99%80%20equals)
 -  🔨 [String vs StringBuilder vs StringBuffer](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/String%20vs%20StrinbBuilder%20vs%20StringBuffer)
 -  🔨 [String Constant Pool](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/String%20Constant%20Pool)
