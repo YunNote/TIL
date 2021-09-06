@@ -46,7 +46,8 @@
 ## 💻 [Network](https://github.com/YunNote/TIL/tree/master/Network)
 -  🔨 [모두의 네트워크 정리](https://github.com/YunNote/TIL/tree/master/Network/%EB%AA%A8%EB%91%90%EC%9D%98%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EB%A6%AC)
     -  [Network, Packet, bit, byte, LAN, WAN](https://github.com/YunNote/TIL/blob/master/Network/%EB%AA%A8%EB%91%90%EC%9D%98%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EB%A6%AC/Chapter01.md)
-    -  [프로토콜, OSI 7 Layer, 캡슐화 역캡슐화](https://github.com/YunNote/TIL/blob/master/Network/%EB%AA%A8%EB%91%90%EC%9D%98%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EB%A6%AC/Chapter02.md)
+   -  [프로토콜, OSI 7 Layer, 캡슐화 역캡슐화](https://github.com/YunNote/TIL/blob/master/Network/%EB%AA%A8%EB%91%90%EC%9D%98%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EB%A6%AC/Chapter02.md)
+   -  [전기신호, 랜케이블, 리피터와 허브의 구조](https://github.com/YunNote/TIL/blob/master/Network/%EB%AA%A8%EB%91%90%EC%9D%98%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EB%A6%AC/Chapter02.md)
     
 
 <hr>
@@ -54,7 +55,7 @@
 ## 💻 [JPA](https://github.com/YunNote/TIL/tree/master/JPA)
 -  🔨 [JPA란](https://github.com/YunNote/TIL/blob/master/JPA/01_JPA%EB%9E%80.md)
 -  🔨 [JPA 사용해보기](https://github.com/YunNote/TIL/tree/master/JPA/02_JPA%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0)
--  🔨 [EntityManagerFactory와 EntityManager](https://github.com/YunNote/TIL/tree/master/JPA/03_%EC%98%81%EC%86%8D%EC%84%B1%20%EC%BB%A8%ED%85%8D%EC%8A%A4%ED%8A%B8)
+-  🔨 [EntityManagerFactory와 EntityManager](https://github.com/YunNote/TIL/blob/master/Network/%EB%AA%A8%EB%91%90%EC%9D%98%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EB%A6%AC/Chapter03.md)
 
 
 
