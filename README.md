@@ -40,6 +40,12 @@
 
 ## 📚 [TDD](https://github.com/YunNote/TIL/tree/master/TDD)
 
+✨ [TDD 란](https://github.com/YunNote/TIL/tree/master/TDD/TDD%EB%9E%80)
+
+<hr>
+
+## 📚 [데이터베이스](https://github.com/YunNote/TIL/tree/master/Database)
+
 <hr>
 
 ## 📚 [Domain Driven Design](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign)
