@@ -31,16 +31,13 @@
 
 
 ## 📚 [알고리즘](https://github.com/YunNote/TIL/tree/master/Algorithm)
-
-✨ [백준 문제 풀이](https://github.com/YunNote/TIL/tree/master/Algorithm/baekjoon)
-
-✨ [leetCode 문제 풀이](https://github.com/YunNote/TIL/tree/master/Algorithm/leetCode)
+✨ [백준 문제 풀이](https://github.com/YunNote/TIL/tree/master/Algorithm/baekjoon) <br>
+✨ [leetCode 문제 풀이](https://github.com/YunNote/TIL/tree/master/Algorithm/leetCode) <br>
 
 <hr>
 
 ## 📚 [TDD](https://github.com/YunNote/TIL/tree/master/TDD)
-
-✨ [TDD 란](https://github.com/YunNote/TIL/tree/master/TDD/TDD%EB%9E%80)
+✨ [TDD 란](https://github.com/YunNote/TIL/tree/master/TDD/TDD%EB%9E%80) <br>
 
 <hr>
 
@@ -49,11 +46,9 @@
 <hr>
 
 ## 📚 [Domain Driven Design](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign)
-✨ [chapter 01 ~ chapter 04](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_01_to_04)
-
-✨ [chapter 05](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_05)
-
-✨ [chapter 06](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_06)
+✨ [chapter 01 ~ chapter 04](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_01_to_04) <br>
+✨ [chapter 05](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_05) <br>
+✨ [chapter 06](https://github.com/YunNote/TIL/tree/master/DomainDrivenDesign/chapter_06) <br>
 
 <hr>
 
@@ -76,11 +71,9 @@
 
 ## 📚 [JPA](https://github.com/YunNote/TIL/tree/master/JPA)
 
- ✨ [JPA란](https://github.com/YunNote/TIL/blob/master/JPA/01_JPA%EB%9E%80.md)
-
- ✨ [JPA 사용해보기](https://github.com/YunNote/TIL/tree/master/JPA/02_JPA%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0)
-
- ✨ [EntityManagerFactory와 EntityManager](https://github.com/YunNote/TIL/blob/master/Network/%EB%AA%A8%EB%91%90%EC%9D%98%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EB%A6%AC/Chapter03.md)
+ ✨ [JPA란](https://github.com/YunNote/TIL/blob/master/JPA/01_JPA%EB%9E%80.md) <br>
+ ✨ [JPA 사용해보기](https://github.com/YunNote/TIL/tree/master/JPA/02_JPA%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0) <br>
+ ✨ [EntityManagerFactory와 EntityManager](https://github.com/YunNote/TIL/blob/master/Network/%EB%AA%A8%EB%91%90%EC%9D%98%20%EB%84%A4%ED%8A%B8%EC%9B%8C%ED%81%AC%20%EC%A0%95%EB%A6%AC/Chapter03.md) <br>
 
 
 
@@ -94,20 +87,15 @@
 
 ## 📚 [React Native](https://github.com/YunNote/TIL/tree/master/ReactNative)
 
-✨ [리액트 네이티브 환경 설정](https://github.com/YunNote/TIL/tree/master/ReactNative/Install_ReactNative_Manual)
-
-✨ [리액트 네이티브 CLI 설치 및 실행](https://github.com/YunNote/TIL/tree/master/ReactNative/Install_ReactNative_CLI)
+✨ [리액트 네이티브 환경 설정](https://github.com/YunNote/TIL/tree/master/ReactNative/Install_ReactNative_Manual) <br>
+✨ [리액트 네이티브 CLI 설치 및 실행](https://github.com/YunNote/TIL/tree/master/ReactNative/Install_ReactNative_CLI) <br>
 
 <hr>
 
 ## 📚 [정리](https://github.com/YunNote/TIL/tree/master/정리)
-
-✨ [SOLID](https://github.com/YunNote/TIL/tree/master/정리/SOLID)
-
-✨ [DTO를 사용했을때 얻을수 있는 이점이 뭘까 (개인적인 생각)](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/DTO_%EA%B0%9C%EC%9D%B8_%EC%83%9D%EA%B0%81)
-
-✨ [hashCode와 equals](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/hashCode%20%EC%99%80%20equals)
-
-✨ [String vs StringBuilder vs StringBuffer](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/String%20vs%20StrinbBuilder%20vs%20StringBuffer)
-
-✨ [String Constant Pool](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/String%20Constant%20Pool)
+✨ [AWS 실제 운영중인 서버 실시간 서버 이관 경험 후기](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/AWS%EA%B0%84%20%EC%84%9C%EB%B2%84%20%EC%9D%B4%EA%B4%80%20%EA%B2%BD%ED%97%98) <br> 
+✨ [SOLID](https://github.com/YunNote/TIL/tree/master/정리/SOLID) <br>
+✨ [DTO를 사용했을때 얻을수 있는 이점이 뭘까 (개인적인 생각)](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/DTO_%EA%B0%9C%EC%9D%B8_%EC%83%9D%EA%B0%81) <br>
+✨ [hashCode와 equals](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/hashCode%20%EC%99%80%20equals) <br>
+✨ [String vs StringBuilder vs StringBuffer](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/String%20vs%20StrinbBuilder%20vs%20StringBuffer) <br>
+✨ [String Constant Pool](https://github.com/YunNote/TIL/tree/master/%EC%A0%95%EB%A6%AC/String%20Constant%20Pool) <br>
