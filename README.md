@@ -42,6 +42,9 @@
 <hr>
 
 ## 📚 [데이터베이스](https://github.com/YunNote/TIL/tree/master/Database)
+✨ [계정 생성 관련](https://github.com/YunNote/TIL/tree/master/Database/%EA%B3%84%EC%A0%95%20%EC%84%A4%EC%A0%95%20%EA%B4%80%EB%A0%A8) <br>
+✨ [R-Tree 정리](https://github.com/YunNote/TIL/tree/master/Database/R-Tree%20%EC%A0%95%EB%A6%AC) <br>
+
 
 <hr>
 
