@@ -98,3 +98,28 @@ function permission ({rank}) {
 
 `단락 평가(short circulting)`
 
+단락 평가라는 단어의 목적은 가장 타당한 정보를 먼저 위치시켜서 정보 확인을 건너 뛰는 것이다.
+
+```javascript
+const image = {
+    path : `image/userAvatar.png`
+}
+
+function getImagePath(image) {
+    const path = image.path ? image.path : 'image/defaultAvatar.png'
+    return path;
+}
+
+// 만약 단락평가를 사용한다면?
+
+const image = {
+    path : `image/userAvatar.png`
+}
+ 
+function getImagePath(image) {
+    return image.path || 'image/defaultAvatar.png'
+}
+```
+`||`를 이용하여 더 간결하게 바꿀 수 있다. `||`는 or연산자로고도 부르는데 선택 가능한 값 중 하나라도 true라면 true를 반환한다.
+따라서 image.path가 true라면 image.path를 반환하고, 만약 image.path가 false 라면 'image/defaultAvatar.png'를 검사하는데
+해당 문자열은 true로 판단되기 때문에 'image/defaultAvater.png' 가 return 된다고 보면 됩니다.
