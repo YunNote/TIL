@@ -60,6 +60,47 @@ WHERE e.emp_no = de.emp_no AND d.dept_no = de.dept_no;
 위 쿼리의 실행계획을 확인해보면 `department as d` 테이블을 드라이빙 테이블로 선택한것을 볼수 있고,<br>
 두번재로는 `dept_emp as de` 테이블을 읽은 뒤에 마디막으로 `departments as d` 테이블을 읽었음을 확인할 수 있다.
 
+실행계획은 일반적인 경우 `인덱스 여부` 로 조인의 순서가 결정되며 조인 컬럼의 인덱스에 아무런 문제가 없는 경우에는
+`WHERE 조건`이 있는경우 해당 조건을 만족한 이후, 레코드가 적은 테이블을 드라이빙테이블로 선택한다.
+
+
+>위의 내용만 본다면 rows 가 가장작은 `employees as e`가 드라이빙 테이블로 선택되어야 할듯 하지만 9건의 rows를 가지고 있는 `departments as d`가 드라이빙 테이블로 선택되어있다
+> 
+> 해당 이유는 type을 보면 알 수 있다. eq_ref는 조인시 기본 키나 고유키를 사용하여 하나의 값으로 접근( 최대 1행만을 정확하게 패치)한다고 합니다.
+> 그렇다는건 rows의 갯수는 많지만 조건식으로 인하여 최대 1개로 판단되어 드라이빙 테이블 우선순위에서 밀린듯하다.
+
+
+하지만 위의 쿼리 조인 순서 말고 사용자가 직접 STRAIGHT_JOIN 힌트를 통해 조인 순서를 변경 할 수 있다.  
+
+```sql
+SELECT STRAIGHT_JOIN
+ e.first_name, e.last_name, d.dept_name
+FROM employees e, dept_emp de, departments d
+WHERE e.emp_no = de.emp_no AND d.dept_no = de.dept_no;
+
+-- 위아래의 코드는 동일하게 동작한다.
+
+SELECT /*! STRAIGHT_JOIN */
+ e.first_name, e.last_name, d.dept_name
+FROM employees e, dept_emp de, departments d
+WHERE e.emp_no = de.emp_no AND d.dept_no = de.dept_no;
+
+```
+
+위의 쿼리를 실행하면 STRAIGHT_JOIN 힌트를 통하여 FROM절에 명시된 테이블의 순서대로 조인을 수행하도록 유도한다.
+따라서 해당 쿼리의 실행계획을 보면 FROM절에 선언된 순서대로 조인을 수행합니다.
+
+1. employees
+2. dept_emp
+3. departments 순입니다.
+
+그렇다면 어떤 경우에 STRAIGHT_JOIN 힌트로 조인 순서를 조정하는 것이 좋을까 ?
+
+1. 임시테이블과 일반 테이블의 조인
+2. 임시 테이블끼리 조인
+   >임시 테이블은 항상 인덱스가 없기 때문에 어느 테이블을 먼저 드라이빙으로 읽어도 무관하기 때문에 크기가 작은 테이블순으로 드라이빙되도록 선택해주는것이 좋다.
+3. 일반 테이블끼리 조인
+   > 양쪽 테이블 모두 조인 컬럼에 인덱스가 있거나, 조인컬럼에 인덱스가 없는경우에는 레코드 수가 적은 테이블을 드라이빙으로선택해주는 것이 좋다, 그 외의 경우에는 조인 컬럼에 인덱스가 없는 테이블을 드라이빙으로 선택하는것이 좋다.
 
 
 ---
