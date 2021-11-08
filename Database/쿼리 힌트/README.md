@@ -131,10 +131,53 @@ WHERE e.emp_no = de.emp_no AND d.dept_no = de.dept_no;
 
 ### ☝ USE INDEX
 가장 자주 사용되는 인덱스 힌트이며, 옵티마이저에게 특정 테이블의 인덱스를 사용하도록 권장하는 힌트 정도ㅋ로 생각하면 된다.<br>
-대부분의 경우 인덱스 힌트가 주어지면 옵티마이저는 사용자의 힌트를 채택하지만 항상 사용하는 것은 아니다.
+w가 주어지면 옵티마이저는 사용자의 힌트를 채택하지만 항상 사용하는 것은 아니다.
 
 ### ☝ FORCE INDEX
 USE INDEX와 크게 다른점은 없지만, USE INDEX 보다 옵티마이저에게 미치는 영향이 더 강하다. USE INDEX 힌트만으로도 영향력이 충분하기때문에
 크게 사용하지 않는다고 한다. 만약 USE INDEX를 부여했는데도 해당 인덱스를 타지 않는다면 FORCE INDEX를 사용해도 해당 인덱스를 사용하지 않을것이다.
 
 ### ☝ IGNORE INDEX
+USE INDEX, FORCE INDEX와는 반대로 특정 인덱스를 사용하지 못하게 하는 용도로 사용하는 힌트다, 때로는 옵티마이저가 풀 테이블 스캔을 사용하도록 유도하기 위해 
+IGNORE INDEX 힌트를 사용할 수도 있다.
+
+---
+
+위의 3종류의 인덱스 힌트 모두 용도를 명시해 줄 수 있다.
+
+ - #### USE INDEX FOR JOIN
+   JOIN 이라는 키워드는 테이블 간의 조인뿐만 아니라 레코드를 검색하기 위한 용도까지 포함하는 용어다.
+   MySQL서버에서는 하나의 테이블로부터 데이터를 검색하는 작업도 JOIN이라고 표현하기 떄문에 FOR JOIN이라는 이름이 붙었다.
+   
+ - #### USE INDEX FOR ORDER BY
+   명시된 인덱스를 ORDER BY 용도로만 사용 가능하도록 제한한다.
+
+ - #### USE INDEX FOR GROUP BY
+   명시된 인덱스를 GROUP BY 용도로만 사용할 수 있게 제한한다.
+
+> 용도를 3가지로 나누긴 했지만 ORDER BY, GROUP BY 작업에서 인덱스를 사용할 수 있다면 더 나은 성능을 보장하며, <br>
+> 용도는 옵티마이저가 대부분 최적으로 선택하기 떄문에 인덱스의 용도까지는 고려하지 않아도 된다.
+
+```mysql
+SELECT * FROM emplyees WHERE emp_no = 10001;
+SELECT * FROM employees FORCE INDEX(primary) WHERE emp_no = 10001;
+SELECT * FROM employees USE INDEX(primary) WHERE emp_no = 10001;
+
+# 위의 3개의 쿼리는 모두 employees 테이블에서 PK를 이용하여 동일한 실행계획으로 쿼리를 처리한다.
+# 기본적으로 인덱스 힌트가 주어지지 않아도 emp_no조건이 있기때문에 PK를 사용하는 것이 최적이라는 것이 옵티마이저에서도 인식하기 때문이다.
+
+SELECT * FROM employees IGNORE INDEX(primary) WHERE emp_no = 10001;
+# 해당 쿼리문은 pk 인덱스를  사용하지 못하게 힌트를 추가하였다. 말도 안되는 힌트이지만 이렇게 IGNORE INDEX를 통하여 PK 
+# 를 무시하라고 한다면 무시할듯 하지만 실제로는 MySQL 5.5버전같은 구버전에서는 실제로 키 스캔을 마다하고 풀테이블 스캔으로 실행 계획이 사용되기도 하였다고 한다.
+
+SELECT * FROM employees FORCE INDEX(ix_firstname) WHERE emp_no = 10001;
+# 전혀 관계없는 ix_firstname 인덱스를 강제로 힌트로 사영했더니 PK를 버리고 풀 테이블 스캔을 하는 형태로 실행 계획이 출력된다.
+```
+
+해당 예제들은 샘플이지만 주의해야할 점이 있다.
+
+`
+전문 검색(FullText Search) 인덱스가 있는 경우 MySQL 옵티마이저는 다른 일반 보조 인덱스를 사용할 수 있는 상황이라고 하더라도 전문 검색 인덱스를 선택하는 경우가 많다
+`
+<br>
+`옵티마이저는 PK나 전문 검색(Full Text Search) 인덱스에 대해서는 선택 시 가중치를 두고 실행 계획을 수립하기 때문이다.`
