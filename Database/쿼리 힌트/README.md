@@ -216,3 +216,63 @@ SELECT * FROM employees FORCE INDEX(ix_firstname) WHERE emp_no = 10001;
  - 글로벌 : 전체 쿼리에 대해서 영향을 미치는 힌트
 
 옵티마이저가 4개의 그룹으로 나뉜다하여 사용 위치가 달라지는 것은 아니다. 
+
+힌트 이름과 설명은 P.379에 상세하게 나와있어 따로 기입하지 않았습니다.
+
+
+---
+
+
+### MAX_EXECUTION_TIME
+
+> 옵티마이저 힌트 중 유일하게 쿼리의 실행 계획에 영향을 미치지 않는 힌트이다. <br>
+> 해당 힌트는 단순하게 쿼리의 최대 실행 시간을 설정하는 힌트이다. 밀리초 단위의 시간을설정 할 수 있고,
+> 쿼리가 지정된 시간을 초과하면 쿼리는 실패하게된다.
+
+
+```sql
+SELECT /*+ MAX_EXECUTION_TIME(100) */ *
+FROM employees
+ORDER BY last_name LIMIT 1;
+# 해당 쿼리가 100ms 를 넘게 되면 실패로 처리된다
+```
+
+---
+
+### SET_VAR
+
+> 옵티마이저 힌트 뿐만 아니라 MySQL의 시스템 변수들 또한 쿼리의 실행 계획에 상당한 영향을 미친다.<br>
+> 해당 힌트는 실행계획을 바꾸는 용도뿐만 아니라 조인 버퍼나 정렬용 버퍼의 크기를 일시적으로 증가시켜 대용량 처리 쿼리의
+> 성능을 향상시키는 용도로 사용 가능하다.
+
+---
+
+### SEMIJOIN & NO_SEMIJOIN
+>SEMIJOIN 힌트는 어떤 세부 전략을 사용할지를 제어하는 데 사용할 수 있다.
+> 
+ - Duplicate Weed-out : SEMIJOIN(DUPSWEEDOUT)
+ - First Match : SEMIJOIN(FIRSTMATCH)
+ - Loose Scan : SEMIJOIN(LOOSESCAN)
+ - Materialization : SEMIJOIN(MATERIALIZATION)
+ - Table Pull-out
+
+`Table Pull-out` 최적화 전략은 별도로 힌트를 사용할 수 없다. 그 이유는 해당 전략은 그 전략을사용할 수 있다면
+항상 더 나은 성능을 보장하기 때문이다.
+
+
+---
+
+### SUBQUERY
+
+> 서브 쿼리 최적화는 세미 조인 최적화가 사용되지 못할 때 사용하는 최적화 방법으로, 다음과 같은 2가지 형태로 최적화가 가능하다.
+ - IN-to-EXISTS : SUBQUERY(INTOEXISTS)
+ - Materialization : SUBQUERY(MATERIALIZATION)
+
+세미 조인 최적화는 주로 IN(subquery)형태의 쿼리에 사용될 수 있지만 안티 세미 조인의 최적화에는 사용될 수 없다.<br>
+그래서 주로 안티 세미 조인 최적화에는 위의 2가지 최적화가 사용된다. 
+
+서브쿼리 최적화 힌트는 세미 조인 최적화 힌트와 비슷한 형태로 , 서브쿼리에 힌트를 사용하거나 서브쿼리에 쿼리 블록 이름을 지정하여 
+외부 쿼리 블록에서 최적화 방법을 명시하면 된다.
+
+---
+
