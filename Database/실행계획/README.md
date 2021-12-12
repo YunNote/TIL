@@ -202,7 +202,8 @@ server_cost 테이블과 engine_cost 테이블은 공통으로 다음 5개의 �
 
  - cost_name : 코스트 모델의 각 단위 작업
  - default_value : 각 단위 작업의 비용(기본값이며 이 값은 MySQL 서버 소스 코드에 설정된 값)
- - cost_value : DBMS 관리자가 설정한 값(이 값이 NULL 이라면 MySQL 서버는 default_value 컬럼의 비용 사용)
+ - cost_value : DBMS 관리자가 설정한 값(이 값이 NULL 이라
+   면 MySQL 서버는 default_value 컬럼의 비용 사용)
  - last_updated : 단위 작업의 비용이 변경된 시점
  - comment : 비용에 대한 추가 설명
 
