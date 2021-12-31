@@ -391,3 +391,17 @@ SELECT SHA2('YUNJINCHOI', 256);
 -- 해당 쿼리가 실행되면 1.5초 뒤에 결과를 확인할 수 있다.
 SELECT SLEEP(1.5);
 ```
+
+
+#### 🔖 JSON 포맷 (JSON PRETTY)
+MySQL 에서는 JSON 데이터의 기본적인 표시 방법은 단순 텍스트 포맷인데, 해당 포멧은 JSON 컬럼값에대한 가독성이 떨어진다.
+하지만 JSON_PRETTY()함수를 사용하면 JSON 컬럼의 값을 읽기 쉬운 포맷으로 변환해준다.
+
+#### 🔖 JSON 필드 크기 (JSON_STORAGE_SIZE)
+JSON 데이터는 텍스트 기반이지만 MySQL 서버는 디스크의 저장 공간을 절약하기 위해 JSON 데이터를 실제 디스크에 저장할 때 
+BSON 포맷을 사용한다, 하지만 BSON으로 변환하였을때 저장 공간의 크기가 얼마나 되ㄹ지 예측하기가 어렵다. 이를 위해 MySQL 서버에서는
+`JSON_STORAGE_SIZE()`함수를 제공한다. 
+
+---
+
+## 😊 SELECT
