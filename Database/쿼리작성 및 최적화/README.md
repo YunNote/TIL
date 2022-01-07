@@ -272,12 +272,12 @@ SYSDATE()함수는 큰 잠재적인 문제가 두가지가 있다.
    <br> 하지만 NOW()함수는 실행되는 시점에 할당받아 모든 부분에서 사용하기 때문에 해당쿼리가 1시가니 소모되더라도 위치나 시점에 관계없이 항상 같은 값을 보장 할 수 있다.
 
 만약 운영중인 애플리케이션에 SYSDATE()가 있다면 NOW()로 바꾸는것을 권장하며 만약 바꾸기 힘들다면
-`my.cnf`나 `my.ini` 설정 파일에서 sysdate-is-now 시스템 변수를 넣어서 SYSDATE()를 호출하여도 NOW()처럼 동작하도록 설정을 하는것을 권장한다. 
+`my.cnf`나 `my.ini` 설정 파일에서 sysdate-is-now 시스템 변수를 넣어서 SYSDATE()를 호출하여도 NOW()처럼 동작하도록 설정을 하는것을 권장한다.
 
 ---
 
-
 ### :) 날짜와 시간의 포맷
+
 DATETIME 타입의 컬럼이나 값을 원하는 형태의 문자열로 변환해야 할 때는 DATE_FORMAT()함수를 이용하면된다.<br>
 
 DATE_FORMAT을 표현하기 위한 지정문자는 https://www.w3schools.com/sql/func_mysql_date_format.asp 다음 사이트를 참고하면됩니다.
@@ -290,6 +290,7 @@ SELECT DATE_FORMAT(now(), '%Y%m%d %H:%i:%s');
 ---
 
 ### :) 날짜와 시간의 포맷
+
 특정 날짜에서 연도나 월을 더하거나 뺄때는 `DATE_ADD()`, `DATE_SUB()`함수를 사용한다.<br>
 사실 `DATE_ADD()`로도 빼기연산을 수행할 수 있어서 `DATE_SUB()`가 크게 필요로 하지는 않는다.
 
@@ -306,7 +307,8 @@ https://dev.mysql.com/doc/refman/8.0/en/date-and-time-functions.html#function_da
 
 ---
 
-### :) 문자열 처리 
+### :) 문자열 처리
+
 `PRAD()`와 `LPAD()`함수는 문자열의 좌측 또는 우측에 문자를 덧붙여서 지정된 길이의 문자열로 만드는함수다.
 
 ```sql
@@ -318,6 +320,7 @@ SELECT LPAD('HELLO', 10, '_');
 ```
 
 #### 🔖 `RTRIM()`, `LTRIM()`, `TRIM()`
+
 - RTRIM() : 우측에 있는 공백을 제거한다.
 - LTRIM() : 좌측에 있는 공백을 제거한다.
 - TRIM() : 좌 우측에 있는 공백을 제거한다.
@@ -326,51 +329,58 @@ SELECT LPAD('HELLO', 10, '_');
 
 ```sql
 -- 출력 결과 :  HELLOYUNJINWORLD
-SELECT CONCAT('HELLO' , 'YUNJIN', 'WORLD');
+SELECT CONCAT('HELLO', 'YUNJIN', 'WORLD');
 ```
 
-
 #### 🔖 `GROUP CONCAT`  문자열 결합
+
 `GROUP_CONCAT()` 함수는 값들을 먼저 정렬한 후 연결하거나 각 값의 구분자 설정도 가능하며, 여러 값중에서 중복을 제거하고 연결하는 것도 가능하다.
 
 ```sql
 -- 컬럼에 데이터가 1,2,3,4,5가 있다고 가정
 -- 출력 결과 : 12345
-SELECT GROUP_CONCAT(sample) FROM sample;
+SELECT GROUP_CONCAT(sample)
+FROM sample;
 
 -- 출력 결과 1|2|3|4|5
-SELECT GROUP_CONCAT(sample SEPARATOR '|') FROM sample;
+SELECT GROUP_CONCAT(sample SEPARATOR '|')
+FROM sample;
 ```
 
-#### 🔖 `CASE WHEN ... THEN ... END` 값으 ㅣ비교와 대체 
-CASE WHEN 은 함수가 아니라 SQL 구문이다. 
-CASE WHEN 은 프로그래밍 언어에서 제공하는 SWITCH구문과 같은 역할을 한다. CASE로 시작하고 END로 끝나야 하며, WHEN ... THEN ... 은 필요한 만큼 반복해서 사용할 수 있다.
+#### 🔖 `CASE WHEN ... THEN ... END` 값으 ㅣ비교와 대체
 
-다음과 같이 사용 가능 
+CASE WHEN 은 함수가 아니라 SQL 구문이다. CASE WHEN 은 프로그래밍 언어에서 제공하는 SWITCH구문과 같은 역할을 한다. CASE로 시작하고 END로 끝나야 하며, WHEN ... THEN ...
+은 필요한 만큼 반복해서 사용할 수 있다.
+
+다음과 같이 사용 가능
+
 ```sql
 
-SELECT 
-       CASE WHEN (select 1 + 1) = 2 THEN '같음' 
-                ELSE '다름' END as result;
+SELECT CASE
+           WHEN (select 1 + 1) = 2 THEN '같음'
+           ELSE '다름' END as result;
 ```
 
 #### 🔖 타입의 변환(CAST, CONVERT)
+
 SQL은 텍스트 기반으로 작동하기 때문에 SQL에 포함된 모든 입력값은 무자열처럼 취급된다. 이럴 때 명ㅁ시적으로 타입의 변환이 필요하다면 `CAST()`함수를 이용하면된다.
 `CONVERT()` 함수도 CAST()와 거의 비슷하며, 단지 함수의 인자 사용 규칙만 조금 다르다.
 
 사용방법은 다음과 같다.
+
 ```sql
 -- 문자열 12345를 숫자 12345로 변환해준다.
 -- 중간에 문자열이 들어가 있더라도 숫자만 반환한다.
-SELECT CAST('12345' as signed INTEGER ) as converted_integer;
+SELECT CAST('12345' as signed INTEGER) as converted_integer;
 ```
 
 #### 🔖 암호화 및 해시 함수(MD5, SHA, SHA2)
+
 MD5와 SHA 모두 비대칭형 암호화 알고리즘이다, 인자로 전달한 문자열을 각각 지정된 비트 수의 해시 값을 만들어내는 함수다.<br>
 SHA()함수는 SHA-1 암호화 알고리즘을 사용하며, 결과로 160비트 해시 값을 반환한다.
 
-`SHA2()`함수는 SHA 암호화 알고리즘보다 더 강력한 224비트부터 512비트 암호화 알고리즘을 사용하여 생성된 해시 값을 반환한다. MD5()함수는 
-메시지 다이제스트 알고리즘을 사용하여 128비트 해시값을 반환한다.
+`SHA2()`함수는 SHA 암호화 알고리즘보다 더 강력한 224비트부터 512비트 암호화 알고리즘을 사용하여 생성된 해시 값을 반환한다. MD5()함수는 메시지 다이제스트 알고리즘을 사용하여 128비트 해시값을
+반환한다.
 
 ```sql
 -- 실행 결과 : 31dff6ef956b7f5d45e9b266fdf3bf41 (32글자)
@@ -383,8 +393,8 @@ SELECT SHA('YUNJINCHOI');
 SELECT SHA2('YUNJINCHOI', 256);
 ```
 
-
 #### 🔖 처리 대기 (SLEEP)
+
 `SLEEP()`함수는 DBMS쿼리 실행 도중 멈춰서 대기하는 기능이다.
 
 ```sql
@@ -392,16 +402,128 @@ SELECT SHA2('YUNJINCHOI', 256);
 SELECT SLEEP(1.5);
 ```
 
-
 #### 🔖 JSON 포맷 (JSON PRETTY)
-MySQL 에서는 JSON 데이터의 기본적인 표시 방법은 단순 텍스트 포맷인데, 해당 포멧은 JSON 컬럼값에대한 가독성이 떨어진다.
-하지만 JSON_PRETTY()함수를 사용하면 JSON 컬럼의 값을 읽기 쉬운 포맷으로 변환해준다.
+
+MySQL 에서는 JSON 데이터의 기본적인 표시 방법은 단순 텍스트 포맷인데, 해당 포멧은 JSON 컬럼값에대한 가독성이 떨어진다. 하지만 JSON_PRETTY()함수를 사용하면 JSON 컬럼의 값을 읽기 쉬운
+포맷으로 변환해준다.
 
 #### 🔖 JSON 필드 크기 (JSON_STORAGE_SIZE)
-JSON 데이터는 텍스트 기반이지만 MySQL 서버는 디스크의 저장 공간을 절약하기 위해 JSON 데이터를 실제 디스크에 저장할 때 
-BSON 포맷을 사용한다, 하지만 BSON으로 변환하였을때 저장 공간의 크기가 얼마나 되ㄹ지 예측하기가 어렵다. 이를 위해 MySQL 서버에서는
-`JSON_STORAGE_SIZE()`함수를 제공한다. 
+
+JSON 데이터는 텍스트 기반이지만 MySQL 서버는 디스크의 저장 공간을 절약하기 위해 JSON 데이터를 실제 디스크에 저장할 때 BSON 포맷을 사용한다, 하지만 BSON으로 변환하였을때 저장 공간의 크기가
+얼마나 되ㄹ지 예측하기가 어렵다. 이를 위해 MySQL 서버에서는
+`JSON_STORAGE_SIZE()`함수를 제공한다.
 
 ---
 
 ## 😊 SELECT
+
+#### 🔖 SELECT 절의 처리 순서
+
+해당 책에서 설명하는 절에서는 (SELECT, FROM, JOIN, WHERE, GROUP BY, HAVING, ORDER BY, LIMIT)과 그 뒤에 기술된 표현식을 묶어서 말한다.
+ 
+개발을 통해 SQL을 작성할때 어느 절이 먼저 실행되는지를 모르면 처리 내용이나 처리결과를 예측할 수 없다.
+
+1. FROM
+2. ON
+3. JOIN
+4. WHERE
+5. GROUP BY
+6. HAVING
+7. SELECT
+8. DISTINCT
+9. ORDER BY
+
+순으로 실행이 됩니다.
+
+
+#### 🔖 WHERE 절과 GROUP BY절 ORDER BY 절에서의 인덱스 사용
+
+인덱스를 사용하기 위한 기본 규칙은 기본적으로 인덱스된 컬럼의 값 자체를 변환하지 않고 그대로 사용한다는 조건을 만족해야 한다.<br>
+인덱스는 컬럼의 값을 변환 없이 B-Tree에 정렬한다음 저장한다. Where 조건이나 Group By 또는 Order by 에서도 원본값을 검색하거나 정렬할 때만 B-Tree에 정렬된 인덱스를 이용한다.
+
+```sql
+# 다음과 같이 변형해서 사용하게 되면 올바르게 인덱스를 이용하지 못한다.
+SELECT * FROM salaries WHERE salary * 1000;
+```
+
+
+#### 🔖 WHERE 절의 비교 조건 사용 시 주의사항
+
+다른 DBMS와는 다르게 MySQL에서는 NULL 값이 포함된 레코드도 인덱스로 관리가 된다. 이는 즉 MySQL의 인덱스는 NULL값을 값으로 인정해서 관리한다는 것을 의미한다.
+
+MySQL에서 NULL 값을 비교하기 위해서는 `IS NULL` 이나 `<=>`연산자를 사용해야 한다.
+
+#### 🔖 문자열이나 숫자 비교
+문자열 컬럼이나 숫자 컬럼을 비교할 때는 반드시 그 타입에 맞는 상숫 값을 사용해야 한다.
+즉 비교 대상 컬럼이 문자열 컬럼이라면 문자열 리터럴을 사용하고, 숫자 타입이라면 숫자 리터럴을 이용하는 규칙만 지켜주면된다.
+
+> 10001 이라고 해서 '10001' 이라고 비교하지 말라고 파악하면 될듯하다.
+
+
+#### 🔖 날짜 비교
+
+날짜만 저장하는 DATE와 날짜와 시간을 함께 저장하는 DATETIME과 TIMESTAMP가 있으며 시간만 저장하는 TIME이라는 타입도 있어서 복잡하다고 느낄 수 있다.
+
+하지만 자주 사용되는것은 DATE와 DATETIME 비교 방식과 함께 TIMESTAMP와 DATETIME 비교에대해 알아본다.
+
+#### 🔖 DATE 또는 DATETIME과 문자열 비교
+
+DATE or DATETIME 타입의 값과 문자열을 비교할 때는 문자열 값을 자동으로 DATETIME 타입의 값으로 변환해서 비교를 수행한다.
+
+개발자 or 사용자가 STR_TO_DATE() 함수를 이용하여 변경해서 비교하지 않아도 MySQL이 내부적으로 변환을 수행한다.
+
+```sql
+-- hire_date를 문자열로 강제로 변경하기 때문에 인덱스를 효율적으로 이용하지 못한다.
+SELECT COUNT(*) FROM emplyees WHERE hire_date > '2022-01-08';
+
+-- 다음과 같이 하는것이 좋음
+SELECT COUNT(*) FROM emplyees WHERE DATE_FORMAT(hire_date,'%Y-%m-%d') > '2022-01-08';
+```
+
+---
+
+#### 🔖 DATE 또는 DATETIME과 비교
+
+DATETIME 타입의 값을 DATE 타입으로 만들지 않고 그냥 비교하게 된다면 MySQL서버가 DATE타입의 값을 DATETIME 값으로 변환을하여비교하게 된다.
+하지만 DATE-> DATETIME 으로 값을 변경할 경우 `2022-01-08 00:00:00`으로 변환되게 되어 DATETIME의 값이 `2022-01-08 00:00:01` 이라면 비교시 false가 뜨게 된다.
+
+---
+
+#### 🔖 DATETIME과 TIMESTAMP 비교 
+DATE나 DATETIME 타입과 TIMESTAMP의 값을 별도의 타입 변환 없이 비교하면 인덱스를 사용하여 문제가 없을듯 하지만 실제로는 그러지 않다.
+
+비교하고자 하는 컬럼이 DATETIME 타입이라면 FROM_UNIXTIME()함수를 이용하여 TIMESTAMP값을 DATETIME 타입으로 만들어서 비교해야 한다.
+
+---
+
+#### 🔖 Short-Circuit Evaluation 을 사용할것
+
+---
+
+#### 🔖 DISTINCT
+특정 컬럼의 유니크한 값을 조회화려면 SELECT 쿼리에 DISTINT를 사용한다.<br>
+개발시 DISTINCT를 많이 사용하지만 해당 DISTINCT를 남용하게 되면 성능적인 문제도ㅓ 있지만 쿼리의 결과도 의도한 바와 달라질 수 있다.
+
+
+---
+
+
+#### 🔖 LIMIT n
+LIMIT는 지정된 순서에 위치한 레코드만 가져오고자 할 때 사용한다.
+```sql
+-- 조회한 employees의 결과에서 상위 5개만 반환한다.
+SELECT * FROM employees LIMIT 0, 5;
+```
+
+---
+
+
+#### 🔖 COUNT
+COUNT() 함수는 모두가 잘 알고 있듯이 결과 레코드의 건수를 반환하는 함수다.
+
+MyISAM 스토리지 엔진을 사용한다면 테이블의 메타 정보에 전체 레코드 건수를 관리한다.<br>
+하지만 WHERE조건이 있는 COUNT(*)쿼리는 그조건에 일치하는 레코드를 읽어 보지 않는 이상 알 수 없으므로 일반적인 DBMS와 같이 처리된다.
+
+---
+
+#### 🔖 JOIN
