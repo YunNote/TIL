@@ -77,7 +77,7 @@
 하지만 실제 정의는 다음과 같다 `컴포넌트를 변경하는 이유는 오직 하나뿐이어야 한다.`
 
 <div style="text-align: center">
-   <img src="img.png" style="width: 480px">
+   <img src="img/img.png" style="width: 480px">
 </div>
 
 위의 사진을 보면 A라는 컴포넌트는 B,E,D,C등과 같이 다양한 컴포넌트에 의존하고 있지만 그에 비해
@@ -104,7 +104,7 @@ E컴포넌트를 변경할 유일한 이유는 새로운 요구사항에 의해 
 > 의존성의 양쪽 코드를 모두 제어할 수 있을 때만 의존성을 역전시킬 수 있다.
 
 <div style="text-align: center">
-   <img src="img_2.png" style="width: 480px">
+   <img src="img/img_2.png" style="width: 480px">
 </div>
 
 위의 이미지를 통해 확인할 수 있는 점은 기존의 코드였다면 도메인 계층의 서비스 컴포넌트와 영속성 계층의 리포지토르 컴포넌트가 서로 상호작용 하고 있을때 
@@ -121,7 +121,7 @@ E컴포넌트를 변경할 유일한 이유는 새로운 요구사항에 의해 
 이 말은 즉 , 도메인 코드가 바깥으로 향하는 어떤 의존성도 없어야 함을 의미한다. 대신 의존성 역전 원칙의 도움으로 모든 의존성이 도메인 코드를 향하고 있다.
 
 <div style="text-align: center">
-   <img src="img_3.png" style="width: 480px">
+   <img src="img/img_3.png" style="width: 480px">
 </div>
 
 클린 아키텍처를 검색하면 가장 많이 나오는 이미지 중 하나이다.
@@ -139,7 +139,7 @@ E컴포넌트를 변경할 유일한 이유는 새로운 요구사항에 의해 
 ### 😊 육각형 아키텍처 (헥사고날 아키텍처)
 
 <div style="text-align: center">
-   <img src="img_1.png" style="width: 480px">
+   <img src="img/img_1.png" style="width: 480px">
 </div>
 
 다음 아키텍처는 흔히 헥사고날 아키텍처라고 부른다.
@@ -159,7 +159,7 @@ E컴포넌트를 변경할 유일한 이유는 새로운 요구사항에 의해 
 ### 🔹 계층으로 구성하기 
 
 <div style="text-align: left">
-   <img src="img_4.png" style="width: 380px">
+   <img src="img/img_4.png" style="width: 380px">
 </div>
 
 코드를 구조화하는 첫번째 방식으로 계층을 이용하는 것이다.
@@ -181,7 +181,7 @@ E컴포넌트를 변경할 유일한 이유는 새로운 요구사항에 의해 
 ### 🔹 기능으로 구성하기
 
 <div style="text-align: left">
-   <img src="img_5.png" style="width: 380px">
+   <img src="img/img_5.png" style="width: 380px">
 </div>
 
  - 기능을 기준으로 구성한 패키지이지만, 기능을 기준으로 코드를 구성하면 아키텍처가 명확하게 보이지 않는다.
@@ -201,7 +201,7 @@ E컴포넌트를 변경할 유일한 이유는 새로운 요구사항에 의해 
 ### 🔹 아키텍처적으로 표현력 있는 패키지 구조
 
 <div style="text-align: left">
-   <img src="img_6.png" style="width: 420px">
+   <img src="img/img_6.png" style="width: 420px">
 </div>
 
 해당 패키지 구조에서는 헥사고날 아키텍처에서 요구하는 요소들에 정해진 위치에 클래스 파일들이 존재하도록 되어있다.
@@ -217,7 +217,7 @@ E컴포넌트를 변경할 유일한 이유는 새로운 요구사항에 의해 
 ### 🔹 의존성 주입의 역할
 
 <div style="text-align: left">
-   <img src="img_7.png" style="width: 420px">
+   <img src="img/img_7.png" style="width: 420px">
 </div>
 
 web -> 인커밍 포트 호출 -> 인커밍 포트를 구현한 구현체 호출 -> 아웃 고잉 포트 호출 -> 아웃고잉 포트를 구현한 구현체 호출 .
