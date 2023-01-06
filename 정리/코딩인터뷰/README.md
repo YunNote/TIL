@@ -185,10 +185,13 @@ class Element {
 
 #### 4-2 최소트리: 오름차순으로 정렬된 배열이 있다. 이 배열안에 들어있는 원소는 정수이며 중복된 값이 없다고 했을 때 높이가 최소가 되는 이진 탐색 트리를 만들어라.
 
-> 이진탐색트리는 루트노드를 기준으로 작은값은 왼쪽, 큰값은 오른쪽으로 정렬되야하는 특성이 있다.
+오름차순으로 정렬, 중복된 값이 없는 정수, 최소 중요
+
+> 
+>이진탐색트리는 루트노드를 기준으로 작은값은 왼쪽, 큰값은 오른쪽으로 정렬되야하는 특성이 있다.
 > <br><br>
 > 즉 높이가 최소가 되려면 양쪽노드에 갯수를 가능하면 맞춰야한다는 말이되고, 루트를 중앙으로 두고 절반은 루트보다 작고, 너머지 절반은 루트보다 커야한다.
-> 
+>  
 
 이를 간단하게 구현하고자 한다면 다음과 같이 구현할 수 있습니다.
  - 배열의 각 중앙값은 루트가 될 것이고, 루트의 왼쪽과 오른쪽은 각각 하위트리가 된다.
@@ -225,5 +228,46 @@ TreeNode createMinimalBST(int[] arr, int start, int end) {
 
 ```
 
+------------------------
 
- 
+#### 4-3 깊이의 리스트 : 이진 트리가 주어졌을 때 같은 깊이에 있는 노드를 연결리스트로 연결해 주는 알고리즘을 설계하라 즉, 트리의 길이가 D라면 D개의 연결리스트를 만들어야한다.
+
+해당 문제는 어떤 방법으로 순회해도 상관없다, 단지 탐색중인 노드의 깊이만 알 수 있으면 된다.
+
+전위순회 알고리즘을 변형하여 해당 문제를 풀어보면 다음과 같이 볼 수 있다. 
+깊이 우선 탐색기법인 DFS를 사용한 예이다.
+
+※ 전위 순회는 Root, Left, Right 순서로 탐색한다.
+
+```java
+void createLevelLinkedList(TreeNode root, ArrayList<LinkedList<TreeNode>> lists, int level) {
+ if(root == null) return;
+
+ LinkedList list = null;
+
+ if(lists.size() == level) {
+   list = new LinkedList();
+   lists.add(list);
+ }else {
+   list = lists.get(level);
+ }
+
+ lists.add(list);
+
+ createLevelLinkedList(root.left, lists, level +1);
+ createLevelLinkedList(root.right, lists, level +1);
+}
+
+ArrayList<LinkedList<TreeNode>> createLevelLinkedList(TreeNode root) {
+  ArrayList<LinkedList<TreeNode>> lists = new ArrayList<>();
+  createLevelLinkedList(root, lists, 0);
+  
+  return lists;
+}
+```
+
+위의 코드는 깊이우선탐색을 통하여 구현하였지만, 너비우선탐색으로변경하여 구현할수도 있다.
+너비 우선탐색은 가장 인접한 노드들을 모두 검사하기때문에 차례대로 방문해나갈것이다, 
+따라서 N번째 깊이에 도착했을때는 N-1 번째 깊이에 해당하는 모든 노드들을 방문한 상태가 된다,
+
+따라서 N번째 깊이에 어떤 노드들이 있는지 알기 위해서는 N - 1 번째 깊이에 있는 노드들의 모든 자식노드들을 검사하면 된다.
