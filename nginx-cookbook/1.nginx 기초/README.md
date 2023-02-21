@@ -87,6 +87,3 @@ docker run --name {name} -p {local-port}:{docker-port} -it -v {local-path}:{dock
 > - reopen : 지정된 로그 파일을 다시 열도록 지시.
 
 
-
-
-
