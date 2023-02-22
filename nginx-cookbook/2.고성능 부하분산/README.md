@@ -103,3 +103,29 @@ SSL/TLS 인증서 유효성 검사에서 사용할 이름이 지정된 변수 �
 
 ### 🌟 UDP 부하분산
 
+> udp 로 정의된 upstream 블록은 nginx stream모듈에서 사용하여 UDP 서버간에 부하 분산을 한다.
+
+```shell
+stream {
+  
+  upstream ntp {
+   server ntp1.sample.com:123 weight=1;
+   server ntp2.sample.com:123; 
+  }
+ 
+ server {
+   listen 123 udp;
+   proxy_pass ntp;
+ } 
+}
+```
+
+UDP 부하분산은 위에 보았던 TCP 부하분산과 비슷하며 listen 옵션에 `udp`만 추가하면 된다.
+
+UDP와 TCP차이는 listen 지시자를 통해 UDP 데이터그램을 처리할 소켓을 지정한다. 해당 데이터그램을
+다루기 위해서는 TCP에서 사용하지 않는 지시자를 몇가지 사용한다. 
+대표적으로는 `proxy_response` 지시자를 사용, 해당 지시자를 설정하지 않으면 `proxy_timeout` 지시자의 제한값이 되기 전까지 무제한으로 응답을 처리한다.
+
+* `proxy_timeout`은 연결을 닫기 전에 목적지 서버로의 읽기, 쓰기 작업완료를 기다리는 시간을 지정하는데 사용한다.
+
+---
