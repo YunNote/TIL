@@ -181,8 +181,28 @@ location /secured/ {
 location 블록은 요청 URI가 secure_link_secret지시자에 설정된 비밀값으로 검증 가능한 md5해시값ㅇ르 가지고
 있지 않으면 403을 반환한다, $secure_link 변수는 URI 포함된 해시값이 검증되기 전까지는 아무런 값을 갖지 않는다.
 
-> 실습 도전 실패 .. 
+> 개인 실습 테스트
 
+```shell
+# default.conf 에 하단 내용 추가 
+location /resources {
+    secure_link_secret secret;
+    if ($secure_link = "") { return 403; }
+
+    rewrite ^ /secured/$secure_link;
+}
+
+location /secure/ {
+    internal;
+}
+
+```
+
+참고 사이트 http://nginx.org/en/docs/http/ngx_http_secure_link_module.html
+
+http://localhost/resources/5e814704a28d9bc1914ff19fa0c4a00a/link -> http://localhost/resources/link 로 접근됨.
+
+/resources 바로뒤에 md5로 암호화된 값을 엏어주면 되는듯. 다만 md5가 `echo -n 'linksecret' | openssl md5 -hex` linksecret로 만들어진 값만 사용되는 이유를 모르겠음 ..
 
 
 
