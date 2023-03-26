@@ -186,23 +186,42 @@ location 블록은 요청 URI가 secure_link_secret지시자에 설정된 비밀
 ```shell
 # default.conf 에 하단 내용 추가 
 location /resources {
-    secure_link_secret secret;
+    secure_link_secret mySecret;
     if ($secure_link = "") { return 403; }
 
     rewrite ^ /secured/$secure_link;
 }
 
-location /secure/ {
+location /secured/ {
     internal;
+    root /var/www;
 }
 
 ```
 
-참고 사이트 http://nginx.org/en/docs/http/ngx_http_secure_link_module.html
+직접 실습을 통해 테스트 해보았습니다.
+`internal;` 을 설정의 차이는 해당 internal; 설정을 한 경우에는 직접적으로 secured경로를 통해 접근 불가능함. 해당 설정을 추가하면
+오로지 secure_link를 통해서만 접근가능.
 
-http://localhost/resources/5e814704a28d9bc1914ff19fa0c4a00a/link -> http://localhost/resources/link 로 접근됨.
+`mySecret을 통해 파일의 md5 만드는법`<br>
+```shell
+# /var/www/secured 하위에 있는 파일명 + secure_link_secret 값을 문자열 연결 후 md5 암호화
+echo -n 'test.htmlmySecret' | openssl md5 -hex
+## f33c627034f3192a0e74f806fa3a54f6 : md5 암호화된 값
+```
 
-/resources 바로뒤에 md5로 암호화된 값을 엏어주면 되는듯. 다만 md5가 `echo -n 'linksecret' | openssl md5 -hex` linksecret로 만들어진 값만 사용되는 이유를 모르겠음 ..
+위 설정대로 /secured path는 resources/{md5}/접근경로 를 통해서만 접근가능 하도록 한다는 설정이 추가되었으며.
+/secured path의 root는 /var/www로 설정하였다.
 
 
+예를 들어 /var/www/secured/test.html 이 있다고 가정한다면 
+`echo -n 'test.htmlmySecret' | openssl md5 -hex` md5 암호화를 거친 후<br>
+
+```http request
+http://localhost/resources/f33c627034f3192a0e74f806fa3a54f6/test.html
+```
+
+위와 같이 접근을 하면 된다.
+
+다음과 같이 작성하면 실제 test.html 파일의 경로를 감출 수 있다. 
 
