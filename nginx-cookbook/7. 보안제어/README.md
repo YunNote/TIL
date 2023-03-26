@@ -134,3 +134,55 @@ HIGH로 지정하고 aNULL과 MD5는 사용하지 않도록 명시적으로 느�
 ---
 
 ### 🌱 업스트림 암호화
+
+엔진엑스와 업스티림 서비스간 트래픽 암호화를 하고, 컴플라이언스 법규 준수 및 보안 네트워크 밖에 있는
+업스트림 서비스와의 연결을 하기 위해서는 HTTP프록시 모듈의 SSL 지시자를 사용해야한다.
+
+
+> 컴플라이언스(Compliance)는 조직이나 기업이 법적, 규제적, 윤리적 요구사항을 준수하는 것을 의미합니다. 다양한 법규와 규제들이 있지만, 여기서는 대표적인 법규들을 알아보겠습니
+
+```shell
+location / {
+  proxy_pass https://upstrea.example.com;
+  proxy_ssl_verify on;
+  proxy_ssl_verify_depth 2;
+  proxy_ssl_protocols TLSv1.2;
+}
+```
+
+proxy 지시자들은 엔진엑스가 준수해야 하는 SSL 규칙을 정의한다.<br>
+`proxy_ssl_verify_depth`의 경우 인증서와 인증서 체인이 2단계 까지 유효한지 확인한다.<br>
+`proxy_ssl_protocols TLSv1.2`를 통하여 TLS 1.2 버전만 SSL 연결 설정에 사용하도록 설정.
+
+> 기본적으로 엔진엑스는 업스트림 서버의 인증서와 연결할 때 사용한 TLS 버전을 확인하지 않는다.
+
+---
+
+### 🌱 location 블록 보호하기
+
+secure link 모듈과 secure_link_secret 지시자를 사용하여 secure link를 가진 사용자만 리소스에 접근하도록 허용한다.
+
+```shell
+
+location /resources {
+  secure_link_secret mySecret;
+  if($secure_link = "") { return 403; }
+  
+  rewrite ^ /secured/$secure_link;
+}
+
+location /secured/ {
+  internal;
+  root /var/www;
+}
+```
+
+해당 설정은 공개된 location 블록과 내부에서만 접근 가능한 location 영역을 만든다. /re4sources 경로에 대해 설정된 공개
+location 블록은 요청 URI가 secure_link_secret지시자에 설정된 비밀값으로 검증 가능한 md5해시값ㅇ르 가지고
+있지 않으면 403을 반환한다, $secure_link 변수는 URI 포함된 해시값이 검증되기 전까지는 아무런 값을 갖지 않는다.
+
+> 실습 도전 실패 .. 
+
+
+
+
