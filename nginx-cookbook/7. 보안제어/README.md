@@ -250,3 +250,32 @@ location /resources {
 `secure_link`지시자는 쉼포로 구분된 매개변수 두개를 사용하여 queryString으로 전달 받을 수 있다.
 
 해시가 검증지 않으면 $secure_link에 값이 저장되지 않으며, 검증되더라도 만료시간이 초과된다면 $secure_link변수값은 0이된다.
+
+---
+
+### 🌱 기간 제한 링크 생성하기.
+
+```shell
+# 유닉스 시스템
+date -d "2030-12-31 00:00" +%s --utc
+# 1924905600
+```
+
+`"$secure_link_expires$uri$remote_addrmySecret";` 다음과 같이 secure_link_md5를 설정하였기 떄문에
+해당 내용과 같이 문자열을 암호화 한다.
+
+따라서 문자열은 `1924905600/resources/index.html127.0.0.1mySecret`이 된다. 
+
+#### 암호화 방법 
+```shell
+# 
+echo -n '1924905600/resources/index.html127.0.0.1mySecret' \ 
+ | openssl md5 -binary \ 
+ | openssl base64 \ 
+ | tr +/ -_ \
+ | tr -d =
+```
+`+`기호는 `-`으로, `/`기호는 `_`기호로 변경, `=`기호는 삭제됩니다.
+
+해당 실행을 통해 해시값을 얻고 링크 만료시점 정보와 함께 URL에 요청하면 된다.
+파이썬으로 테스트 필요.
