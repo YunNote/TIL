@@ -226,3 +226,27 @@ http://localhost/resources/f33c627034f3192a0e74f806fa3a54f6/test.html
 다음과 같이 작성하면 실제 test.html 파일의 경로를 감출 수 있다. <br> 
 또한 md5의 값과 요청하고자 하는 파일의 명이 다르다면 403으로 접근 실패한다.
 
+---
+
+### 🌱 비밀값으로 보안링크 생성하기.
+
+nginx의 secure link 모듈은 URI경로와 비밀값을 연결한 문자열로 생성한 md5 해시의 16진수 다이제스트를 인식한다.
+위의 location블록 보호하기의 내용과 연관.
+
+---
+
+### 🌱 기간 제한 링크로 location 블록 보호하기 (실습 실패..)
+
+```shell
+location /resources {
+  root /var/www;
+  secure_link $arg_md5,$arg_expires;
+  secure_link_md5 "$secure_link_expires$uri$remote_addrmySecret";
+  if ($secure_link = "") { return 403; }
+  if ($secure_link = "0") { return 410; }
+}
+```
+
+`secure_link`지시자는 쉼포로 구분된 매개변수 두개를 사용하여 queryString으로 전달 받을 수 있다.
+
+해시가 검증지 않으면 $secure_link에 값이 저장되지 않으며, 검증되더라도 만료시간이 초과된다면 $secure_link변수값은 0이된다.
