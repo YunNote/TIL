@@ -279,3 +279,83 @@ echo -n '1924905600/resources/index.html127.0.0.1mySecret' \
 
 해당 실행을 통해 해시값을 얻고 링크 만료시점 정보와 함께 URL에 요청하면 된다.
 파이썬으로 테스트 필요.
+
+
+
+---
+
+### 🌱 HTTPS 리다이렉션
+
+```shell
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  server_name _;
+  return 301 https://$host$request_uri
+}
+```
+
+위와 같이 지정후 nginx reload한후 접근하게 된다면 IPv4, IPv6 주소를 가리지 않고 80포트로 요청을 받는다.
+return 구문은 301 Permanent Redirect 응ㄷ갑을 보내 동일한 호스트명과 uri 에 대해서 다시 HTTPS로 요청하도록 한다. 
+
+![img.png](img.png)
+
+---
+
+### 🌱 HTTPS 리다이렉션 - SSL 오프로딩 계층이 있는경우
+
+> 엔진엑스가 실제 사용자의 요청을 수신하는 경우가 아니라면 X-Forwarded-Proto 헤더를 통해 사용자의 프로토콜을 확인할 수 있으며
+> 이값을 활용하여 리다이렉트를 한다.
+
+```shell
+server {
+  listen 80 default_server;
+  listen [::]:80 default_server;
+  server_name _;
+  
+  if ($http_x_forwarded_proto = 'http') {
+    return 301 https://$host$request_uri
+  }  
+}
+```
+
+위에 나온 일반 리다이렉션과 비슷해보이지만 x-forwarded-proto 헤더값이 http인 경우에만 301 리다이렉트 응답을 한다.
+
+
+---
+
+### 🌱 HSTS 
+Strict-Transport-Security 헤더를 설정하면 HSTS확장을 사용할 수 있다.
+```shell
+# 헤더를 유효기간 1년으로 지정하여 헤더를 전달한다, 해당 도메인에 대해 HTTP요청이 발생하면 내부 리다이렉트를 통해 모든 요청이 항상 HTTPS를 이용하도록 한다.
+add_header Strict-Transport-Seecurity max-age=31536000;
+```
+
+> 해당 설정이 중요한 이유는 일반적으로 POST요청의 폼 데이터에 민감한 정보들이 담기지만 HTTP로 전송이 된다면 엔진엑스의 HTTPS 리다이렉트 응답은 도움이 되지 않는다.
+> 왜냐하면 HTTPS로 리다이렉트 되기전에 이미 평문으로 데이터가 탈취되어 상황이 끝났을수도 있다. 따라서 근본적으로는 HTTP로 요청을
+> 보내지 못하게 함으로써 요청이 암호화되지 않은 상태로 전송되는상황을 방지한다.
+ 
+---
+
+### 🌱 다중 계층 보안
+
+`satisfy` 지시자를 사용하면 설정 옵션에 따라서 모든 보안 검증을 통과해야만 요청을 허용할 것인지, 일부 보안 검증만
+통과해도 유효한 요청으로 볼지 설정한다.
+
+`satisfy` 지시자는 `any`와 `all` 값을 가지게 되며 `all`일 경우 모든 요청에 대해서 통과해야지만 유효한 요청으로 판단.
+`any`일 경우에는 하나 이상을 만족하면 유효한 요청으로 판단한다.
+
+`satify`는 다양한 지시자들과 함께 사용할 수 있다, 높은 수준의 보안 정책을 요구하는 location, server블록에 `satisfy`지시자를 적용할 수 있다.
+
+
+---
+
+엔진엑스 플러스에 대한 내용은 도서 참고 . 
+
+---
+
+### 🌱 다중 계층 보안(엔진엑스플러스)
+엔진엑스 플러스를 사용하면 클러스터 레벨으 rate limit 과 자동화된 차단리스트를 적용할 수 있다.
+
+### 🌱 앱 프로텍트 WAF 모듈 설치와 설정 (엔진엑스 플러스)
+엔진엑스 플러스를 사용하면 클러스터 레벨으 rate limit 과 자동화된 차단리스트를 적용할 수 있다.
