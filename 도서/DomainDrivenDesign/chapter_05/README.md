@@ -157,7 +157,7 @@ Entity의 근본적인 개념은 객체의 생명주기 내내 이어지는 추�
 
 해당 예저는 Value Object가 없는 Customer를 ValueObject 를통해 분리하였을때의 모습입니다.
 
-![image](./image.jpg)
+![image](image.jpg)
 ```java
 // Value Object 를 사용하지 않았을때의 Customer
 public class Customer {

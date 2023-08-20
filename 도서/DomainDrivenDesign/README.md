@@ -1,6 +1,6 @@
 
 <div>
-    <img src="./book.png" style="width: 201px; margin: 0 auto;">
+    <img src="book.png" style="width: 201px; margin: 0 auto;">
     <p>에릭 에반스 - 도메인 주도 설계</p>
 </div>
 

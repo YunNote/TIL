@@ -54,7 +54,7 @@ Aggregate를 모델링하고 설계에 Factory와 Repository를 추가하면 모
    > 루트 이외의 ENTITY는 지역 식별성을 지니며 지역 식별성은 AGGREGATE내에서만 구분되면된다. <br>
    > 해당 AGGREGATE의 경계 밖에 위치한 객체는 루트 ENTITY의 컨텍스트 말고는 AGGREGATE의 내부를 볼 수 없기 때문이다. 
 
-  ![](./aggregate.jpg)
+  ![](aggregate.jpg)
   
 위의 사진은 대략 Car Aggregate와 Engine, Customer으로 이루어진 사진입니다.
 
