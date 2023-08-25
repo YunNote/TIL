@@ -246,4 +246,62 @@ HTTP 커넥션을 요청이 끝났다고 끝내지 않고 커넥션을 계속 �
 HTTP/1.0+ 에서는 `keep-alive` 커넥션이 있고, HTTP/1.1에는 `지속커넥션`이 있다.
 
 
+---
 
+#### Http/1.0+의 Keep-Alive 커넥션 
+
+`keep-alive`는 커넥션을 유지하기 위해서 요청에 Connection:Keep-Alive 헤더를 포함시킨다.
+해당 요청을 받은 서버는 그다음 요청도 이커넥션을 통해 받고자 한다면 응답 메시지에 같은 헤더를
+포함시켜 응답한다. 
+
+Connection: Keep-Alive 헤더가 없다면, 클라이언트는 서버가 `keep-alive`를 지원하지 않는다.
+
+`keep-alive`의 동작은 헤더의 쉼표로 구분된 옵션들로 제어할 수 있다.
+
+- timeout - `keep-alive` 응답 헤더를 통해 보낸다, 해당 커넥션이 얼마간 유지될 것인지를 의미한다.  
+- max - `keep-alive` 응답 헤더를 통해 보낸다. 이는 커넥션이 몇 개의 HTTP 트랜잭션을 처리할 때까지 유지될 것인지를 의미한다.
+
+> `keep-alive` 헤더의 사용은 선택사항이지만 , Connection: Keep-Alive 헤더가 있을때만 사용 가능하다.
+
+---
+
+#### Keep-Alive 커넥션 제한과 규칙 
+
+- HTTP/1.0에서 기본으로 사용되지 않는다. 사용하기위해서는 Connection: Keep-Alive 헤더를 보내야 한다
+- 커넥션을 계속 유지하려면 Connection:Keep-Alive 헤더를 포함해 보내야 한다. 보내지 않는다면 서버는 요청 처리 후 끊는다.
+- 클라이언트는 Connection: Keep-Alive 가 포함되어있는지를 보고 커넥션을 끊을지 선택한다.
+- 프락시와 게이트웨이는 Connection 헤더의 규칙을 철저히 지켜야한다. 프락시와 게이트웨이는 메시지를 전송하거나 캐시에 넣기전에 Connection헤더에 명시된 모든 헤더 필드와 Connection 헤더를 제거해줘야 한다.
+
+---
+
+#### Keep-Alive 멍청한 프록시 
+
+![img_2.png](img_2.png)
+출처 - https://beomy.github.io/tech/etc/http-version/
+
+
+---
+
+#### Proxy-Connection 
+
+프락시 및 게이트웨에서 무조건적으로 헤더를 전달하는 문제를 해결하기 위해 나온 차선책이다. Proxy-Connection이라는 헤더를 사용하는것이다.
+Proxy-Connection은 프락시를 별도로 설정할 수 있는 브라우저에서만 지원한다.
+ 
+멍청한 프락시는 Connection: Keep-Alive 같은 헤더를 무조건 전달하기 때문에 문제를 일으킨다.
+
+Proxy-Connection을 사용하면 헤더를 무조건 전달하더라도 웹서버는 그것을 무시하기 때문에 별 문제가 되지 않는다. 하지만 영리한 프락시를 사용하면 의미없는 Proxy-Connection헤더를
+Connection헤더로 바꿈으로써 원하는 결과를 얻을 수 있다.
+
+
+---
+
+#### HTTP/1.1의 지속 커넥션 
+
+HTTP/1.1에서는 keep-alive 커넥션을 지원하지 않는 대신 개선된 `지속 커넥션`을 지원한다.
+
+`지속 커넥션`의 목적은 `keep-alive`와 같지만 더 개선되어 잘 동작한다.
+
+`지속 커넥션`은 `keep-alive`와 달리 별도의 설정이 없어도 활성화 되어있다. 
+> HTTP/1.1에서는 별도의 설정을 하지 않는다면 모든 커넥션을 지속 커넥션으로 취급한다.
+
+`지속 커넥션`에서 연결을 끊기 위해서는 기존과 동일하게 Connection: close를 명시해줘야 한다.
