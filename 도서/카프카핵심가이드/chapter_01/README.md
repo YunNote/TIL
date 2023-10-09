@@ -288,6 +288,58 @@ $ ./gradlew jar -PscalaVersion=2.13.10 ## 스칼라 프로젝트 빌드
  
 ```
 
+Kafka를 실행하기전 Zookeeper에 대해 먼저 설명한다.
+
+
+`Zookeeper`는 고가용성을 보장하기 위해 `앙상블`이라는 클러스터 단위로 동작하도록 설계 되었다. 주키퍼가 사용 하는
+부하분산 알고리즘 때문에 앙상블은 홀수 개의 서버를 가지는것이 권장된다.
+
+주키퍼가 요청에 응답하기 위해서는 앙상블 멤버의 과반 이상이 동작해야 한다. 3개로 구성한다면 1대가 정상적이지 않더라도 
+문제 없이 동작한다는 내용이다.
+
+앙상블을 설정하기 위해서는 다음과 같은 설정이 되어야 한다.
+ - 각 서버는 공통된 설정 파일으 가져야 한다. 해당설정에는 앙상블에 포함된 서버의 목록이 포함되어있다.
+ - 각 서버의 dataDir에는 자신의 ID번호를 지정하는 myid파일을 가지고 있어야 한다.
+
+3대의 주키퍼로 구성되는 앙상블 설정은 다음과 같을 수 있다.
+```shell
+tickTime=2000
+dataDir=/var/lib/zookeeper
+clientPort=2181
+initLimit=20  # 팔로워가 리더와 연결할 수 있는 최대 시간 (초기화 제한 시간)  
+syncLimit=5 # 팔로워가 리더와 연결할 수 있는 최대 시간 (동기화 제한 시간)
+server.1=zoo1.example.com:2888:3888
+server.2=zoo2.example.com:2888:3888
+server.3=zoo3.example.com:2888:3888
+```
+
+`initLimit`, `syncLimit` 은 tickTime 단위로 정의된다.<br> 
+`initLimit`의 경우 20 * 2000ms = 40000ms(40초)가 된다
+
+앙상블의 서버 목록은 다음과 같은 규칙을 갖는다
+
+server.{X}={hostname}:{peerPort}:{leaderPort} 
+
+X : 서버의 ID, 정숫값이어야 하지만, 0부터 시작할 필요 없으며, 순차적일 필요도 없다.<br>
+hostname : 서버의 호스트명 or IP 주소 <br>
+peerPort: 앙상블 안의 서버들이 서로 통신할때 사용하는 포트 <br>
+leaderPort: 리더를 선출하는데 사용되는 TCP 포트 번호
+
+클라리언트는 clientPort에 지정된 포트번호로 앙상블에 연결할수만 있으면 된다.
+> clientPort는 ./config/zookeeper.properties에 정의되어 있다.
+
+하지만 앙상블은 세 포인트를 모두 사용해서 통신할 수 있어야 한다.
+
+----
+
+## 브로커 설정하기
+
+> ./config/server.properties 에 정의된 속성들로본다.
+
+
+
+---
+
 ## Zookeeper를 이용한 Kafka 실행
 
 기본적으로 Kafka를 실행시키기 위해서는 Zookeeper 서버가 떠있어야 한다. 다음 명령어를 통해 Zookeeper와 Kafka 서버를 실행 시킬 수 있다.
@@ -305,6 +357,8 @@ $ ./gradlew jar -PscalaVersion=2.13.10 ## 스칼라 프로젝트 빌드
 # Consumer 실행
 ./bin/kafka-console-consumer.sh --topic test --from-beginning --bootstrap-server localhost:9092 
 ```
+
+---
 
 
 카프카 4버전 이후 부터는 Zookeeper가 제거되기 때문에 Kraft를 이용하여 실행 할 수 있다.
@@ -354,3 +408,5 @@ bin/kafka-server-start.sh config/kraft/server.properties
 ![화면-기록-2023-10-10-오전-12.24.34.gif](..%2F..%2F..%2F..%2F..%2FDownloads%2F%ED%99%94%EB%A9%B4-%EA%B8%B0%EB%A1%9D-2023-10-10-%EC%98%A4%EC%A0%84-12.24.34.gif)
 
 위와 같이 Zookeeper의 실행없이 Kraft를 이용하여 Kafka 구동이 가능하다.
+
+
