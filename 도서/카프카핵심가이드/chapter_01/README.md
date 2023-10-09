@@ -290,6 +290,25 @@ $ ./gradlew jar -PscalaVersion=2.13.10 ## 스칼라 프로젝트 빌드
 
 ## Zookeeper를 이용한 Kafka 실행
 
+기본적으로 Kafka를 실행시키기 위해서는 Zookeeper 서버가 떠있어야 한다. 다음 명령어를 통해 Zookeeper와 Kafka 서버를 실행 시킬 수 있다.
+
+```shell
+# 주키퍼 서버 실행
+./bin/zookeeper-server-start.sh ./config/zookeeper.properties  
+
+# Kafka 서버 실행 
+./bin/kafka-server-start.sh ./config/server.properties 
+
+# Producer 실행 
+./bin/kafka-console-producer.sh --topic test --bootstrap-server localhost:9092
+
+# Consumer 실행
+./bin/kafka-console-consumer.sh --topic test --from-beginning --bootstrap-server localhost:9092 
+```
+
+
+카프카 4버전 이후 부터는 Zookeeper가 제거되기 때문에 Kraft를 이용하여 실행 할 수 있다.
+
 ## Kraft를 이용한 Kafka 실행
 ```shell
 Kraft를 이용하여 Kafka를 구동시키기 위해서는 초기 설정이 필요하다.
