@@ -249,5 +249,89 @@
 
 ---
 
+# 2장 카프카 설치하기 (Mac Brew기준 설치)
 
-## 
+카프카를 설치하기 위해서는 선행해야 하는 작업이 있으며 다음과 같다.
+
+- Java 설치
+  > 카프카와 주키퍼는 모든 OpenJDK기반 자바 규현체위에서 원활히 작동한다.
+
+- 주키퍼 설치하기 
+  > 아파치 카프카는 카프카 클러스터의 메타데이터와 컨슈머 클라이언트에 대한정보를 저장하기 위해 주키퍼를 사용한다.<br>
+  > 주키퍼는 설정 정보, 이름 부여, 분산 동기화, 그룹 서비스를 제공하는 중앙화된 서비스이다.
+
+
+추가적인 설명으로 카프카 4.0 부터는 주키퍼를 제거한다고 한다. 주키퍼를 제거 한 후 KRaft(Apache Kafka Raft)로 대체 된다고 한다. (2.8 이상 부터는 설정으로 선택적 제공)
+
+주키퍼를 제거하는 이유는 주키퍼 자체의 문제가 아닌 카프카의 외부에서 메타데이터를 관리하는 컨셉자체가 문제되었다고 한다.
+
+또한 두개의 시스템을 사용해야 한다는것이 운영의 복잡성을 증가, 학습에 드는시간 증가,  잘못된 구성으로 인한 보안 침해를 일으킬 확률이 높다.
+
+출처 - https://velog.io/@joyfulbean/Apache-Kafka-Zookeeper-%EC%A0%9C%EA%B1%B0-%EC%9D%B4%EC%9C%A0
+
+---
+
+## 카프카 설치
+
+[카프카 공식 사이트](https://kafka.apache.org/downloads) 에서 최신 버전 다운받았습니다.
+
+```shell
+(Kafka)[https://kafka.apache.org/downloads] Kafka 공식 사이트에서 
+2023.10.09 기준 3.5.1 다운로드 
+
+다운로드 후 
+
+# 압축해제
+$ wget https://downloads.apache.org/kafka/3.5.1/kafka-3.5.1-src.tgz
+$ tar -xzf kafka-3.5.1-src.tgz
+$ ./gradlew jar -PscalaVersion=2.13.10 ## 스칼라 프로젝트 빌드
+ 
+```
+
+## Zookeeper를 이용한 Kafka 실행
+
+## Kraft를 이용한 Kafka 실행
+```shell
+Kraft를 이용하여 Kafka를 구동시키기 위해서는 초기 설정이 필요하다.
+
+log.dirs='{로그 쌓을 경로}' 를 지정해준다 .
+# 기본 값은 log.dirs=/tmp/kraft-combined-logs 로 되어있다.
+
+# 아래 이미지에서 보이는 xHrznAlKSz66dVGcdjxtfw << 가 랜덤으로 생성된 UUID입니다.
+{kafka 경로}/config/kraft/server-properties 내부에 로그 폴더 포맷에 대한 
+Cluster UUID의 생성 및 초기화가 필요.
+```
+
+![img_4.png](img_4.png)
+
+```shell
+# 로그 폴더 포맷 
+{Kafka 경로}/bin/kafka-storage.sh format -t xHrznAlKSz66dVGcdjxtfw -c 
+./config/kraft/server.properties
+
+# log.dirs 로그경로에 들어가 meta.properties 에 접근하면 아래와 같이 cluster.id가 적용되어있다.
+```
+![img_5.png](img_5.png)
+
+위와 같이 설정되어 있다면 Kafka 서버를 시작한다
+```shell
+bin/kafka-server-start.sh config/kraft/server.properties
+```
+
+그러면 Zookeeper서버를 실행하지 않아도 Kafka가 실행되는것을 확인할 수 있다.
+올라간 Kafka가 정상적으로 동작하는지 확인을 해봐야한다.
+
+```shell
+# 테스트를 위해 `test`라는 토픽을 생성 
+./bin/kafka-topics.sh --create --topic test --bootstrap-server localhost:9092
+
+# 프로듀서 실행 
+./bin/kafka-console-producer.sh --topic test --bootstrap-server localhost:9092
+
+# 컨슈머 실행
+./bin/kafka-console-consumer.sh --topic test --from-beginning --bootstrap-server localhost:9092
+```
+
+![화면-기록-2023-10-10-오전-12.24.34.gif](..%2F..%2F..%2F..%2F..%2FDownloads%2F%ED%99%94%EB%A9%B4-%EA%B8%B0%EB%A1%9D-2023-10-10-%EC%98%A4%EC%A0%84-12.24.34.gif)
+
+위와 같이 Zookeeper의 실행없이 Kraft를 이용하여 Kafka 구동이 가능하다.
