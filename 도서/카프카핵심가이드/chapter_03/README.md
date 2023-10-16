@@ -50,12 +50,61 @@
 최소 2개 이상을 지정할것을 권장하긴한다.
 
 
+### 🔥 key.serializer
+
+카프카에 쓰기 위한 레코드를 직렬하기 위해서 사용하게될 시리얼라이저 클래스의 이름을 지정하기 위해 사용한다.
+
+브로커는 메시지의 키값, 밸류값의 바이트 배열을 전달받는다. 하지만 애플리케이션마다 전송 방법이 다르기 때문에
+임의의 애플리케이션에서 객체를 전송할 수 있도록 매개변수화된 타입을 제공하도록 지원한다.
+
+해당 옵션을 사용하면 가독성 높은 코드를 작성할 수 있지만, 프로듀서입장에서는 해당 객체를
+어떻게 바이트배열로 변경해야하는지 알아야한다.
+
+`key.serializer` 옵션에는 org.apache.kafka.common.serialization.Serializer인터페이스를
+구현하는 클래스의 이름이 지정되어야 한다.  
+
+카프카 Client 는 `ByteArraySerializer`, `StringSerializer`, `IntegerSerializer`등등이 포함되어 있어
+자주 사용하는 타입을 사용하고 싶은경우 직접구현할 필요없이 있는것읅 가져다 쓰면된다.
+
+### 🔥 value.serializer
+
+카프카에 쓸 레코드의 밸류값을 직렬하기 위한 시리얼라이저 클래스의 이름을 지정한다.
+
+---
 
 
+## 직접 Producer 구현 및 테스트 
 
+#### <i>해당 예제는 Java 기준입니다.</i>
 
+```groovy
+// Kafka Gradle 추가
+// https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka
+implementation 'org.springframework.kafka:spring-kafka:3.0.11'
+```
 
+```java
+public static void main(String[] args) {
+   
+  // 1. Properties 객체 생성 
+  // 2. Properties 에 필수 설정 값 세팅  
+  Properties configs = new Properties();
+  configs.put("bootstrap.servers", "localhost:9092"); // kafka host 및 server 설정
+  configs.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");   // serialize 설정
+  configs.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
+  // 3. KafkaProducer 객체 생성시 config 를 전달하여 프로듀서 생성 .
+  KafkaProducer<String, String> producer = new KafkaProducer<String, String>(configs);
+  producer.send(new ProducerRecord<>("test", "WORLD"));
+
+  producer.flush();
+  producer.close();
+}
+```
+
+만약 필수값을 넣지 않는다면 아래와 같은 에러가 발생 
+
+![img_1.png](img_1.png)
 
 
 
