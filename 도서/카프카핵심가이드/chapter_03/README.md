@@ -93,6 +93,14 @@ public static void main(String[] args) {
   configs.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");   // serialize 설정
   configs.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
+  /**
+   * bootstrap.servers => AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG
+   * key.serializer => ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG
+   * value.serializer => ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG
+   * 오타에 취약하기 때문에 2.x부터는 카프카 클래스에 정의된 상수 사용 가능.
+   */
+  
+  
   // 3. KafkaProducer 객체 생성시 config 를 전달하여 프로듀서 생성 .
   KafkaProducer<String, String> producer = new KafkaProducer<String, String>(configs);
   producer.send(new ProducerRecord<>("test", "WORLD"));
@@ -107,6 +115,10 @@ public static void main(String[] args) {
 ![img_1.png](img_1.png)
 
 
+
+---
+
+## 메시지를 전송하는 방법 
 
 
 
