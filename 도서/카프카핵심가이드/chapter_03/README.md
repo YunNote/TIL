@@ -382,6 +382,72 @@ max.in.flight.requests.per.connection값에 따라 다음 메시지가 성공할
 추가로 해당 값을 활성화 하려면 `max.in.flight.requests.per.connection` 매개변수의 값은 5 이하로, `retries` 값은 1 이상으로. `acks=all` 로 설정해야 한다.
 만약 이와 같이 설정하지 않는다면 `ConfigException` 발생 
 
---
+---
+
+## 시리얼라이저
+
+### 커스텀 시리얼라이저
+
+카프카로 전송해야 하는 객체가 단순 문자열이나 정숫값이 아닐 경우에는 두가지의 선택지가 있을 수 있다.
+
+1. 레코드를 생성하기 위한 직렬화 라이브러리를 사용한다 
+2. 객체를 직렬화 하기 위해 커스텀 직렬화 로직을 작성한다.
+
+두가지에 대해 아라는 보겠지만 직렬화 라이브러리를 사용하는것을 추천한다. 이유는 필드가 추가 또는 변경의 경우 호환성유지를 위해 같은 내용을 사용하는
+모든 곳에서 동시에 코드를 변경해야 하는 상황이 발생한다. 그래도 구현하면 다음과 같이 사용 가능하다.
+
+아래 예는 직접 작성한 CustomSerializer 샘플입니다.
+```java
+@Getter
+public class User{
+
+   private String username;
+   private int age;
+   private String phone;
+
+   public User(String username, int age, String phone) {
+      this.username = username;
+      this.age = age;
+      this.phone = phone;
+   }
+}
+```
+
+```java
+public class UserCustomSerializer  implements Serializer<User> {
+
+   private final ObjectMapper om = new ObjectMapper();
+
+   @Override
+   public byte[] serialize(String topic, User data) {
+
+      // Getter, Setter 를 직접 User.class 내부에 만들어주면 필요 없으나.
+      // @Getter를 사용할 경우 해당 옵션이 필요. 해당 옵션을 사용하기 싫다면 User.class의 필드들의
+      // 접근제한자를 public 으로 변경해줘야함.
+      om.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+
+      if(Objects.isNull(data)) {
+         return null;
+      }
+
+      try {
+         return om.writeValueAsBytes(data);
+      } catch (JsonProcessingException e) {
+         throw new RuntimeException(e);
+      }
+   }
+}
+```
+
+```java
+Properties configs = new Properties();
+configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092"); // kafka host 및 server 설정
+configs.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");   // serialize 설정
+configs.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "com.example.kafkasample.UserCustomSerializer");
+```
+
+![img_4.png](img_4.png)
+
+---
 
 
