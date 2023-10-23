@@ -549,3 +549,61 @@ record.headers().add("출처", "A서비스".getBytes(StandardCharsets.UTF_8));
 
 추가로 Consumer에서 해당 헤더를 받기위해서 `@Header` 어노테이션을 사용해서 받을 수 있으며 여러개일 경우
 `@Headers MessageHeaders` 를 사용하여 한번에 가져올 수 있다.
+
+---
+
+## 인터셉터 
+
+카프카를 사용한 애플리케이션들에 대해서 코드를 고치지 않으면서 동작을 변경해야 하는 상황이 발생할 수 있다. 
+
+특별히 모든 애플리케이션에 동일한 동작을 집어넣는다거나 하는 코드이다. 이럴때 인터셉터를 사용하면 해당
+내용을 적용할 수 있다.
+
+### `ProducerRecord<K,V> onSend(ProducerRecord<K,V> record)`
+
+해당 메서드는 프로듀서가 레코드를 브로커에게 보내기전 직렬화되기 전에 호출된다. 해당 매서드를 재정의하면 레코드 정보를 볼수있으며
+수정또한 가능하다. 주의해야할점은 ProducerRecord만 반환해주면 된다.
+
+### `void onAcknowledgement(RecordMetadata metadata, Exception exception)`
+
+해당 메서드는 카프카 브로커가 보낸 응답을 클라이언트가 받았을때 호출된다. 브로커가 보낸 응답을 변경할 순 없지만
+담긴 정보는 읽을 수 있다.
+
+인터셉터의 대표적이 사례로는 모니터링, 정보추적, 표준 헤더 삽입 등이 있다.
+
+![img_7.png](img_7.png)
+
+```java
+
+// @Bean설정시 
+// kafkaTemplate.setProducerInterceptor(interceptor) 와 같이 사용 가능하다.
+
+// Properties에는 아래와 같이 추가 가능 
+configs.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, "com.example.kafkasample.KafkaInterceptor");
+
+public class KafkaInterceptor implements ProducerInterceptor<String, User> {
+
+   @Override
+   public ProducerRecord<String, User> onSend(ProducerRecord<String, User> record) {
+
+      System.out.println("onSend");
+      return record;
+   }
+
+   @Override
+   public void onAcknowledgement(RecordMetadata metadata, Exception exception) {
+
+      System.out.println("onAcknowledgement");
+   }
+
+   @Override
+   public void close() {
+
+   }
+
+   @Override
+   public void configure(Map<String, ?> configs) {
+
+   }
+}
+```
