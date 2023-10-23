@@ -528,3 +528,24 @@ new ProducerRecord<>(topic, value)
 
 ## 헤더 
 
+레코드는 키, 벨류 외에도 헤더를 포함할 수 있다. 헤더의 사용은 기존 케도르르 건드리지 않고
+추가 메타데이터를 심고 싶을때 사용한다.
+
+주된 용도중 하나는 메시지의 전달 내용을 기록하는 것이다. 데이터가 생성된 곳의 정보를 헤더에 저장해둔다면 
+메시지를 파싱할 필요없이 헤더에 심어진 정보만으로도 해당 메시지를 라우팅하거나 출처를 추측할 수 있다.
+
+```java
+ProducerRecord<String, User> record = new ProducerRecord<>(
+   "test",
+  new User("최윤진", 31, "01012345678")
+);
+record.headers().add("출처", "A서비스".getBytes(StandardCharsets.UTF_8));
+```
+
+![img_6.png](img_6.png)
+
+직접 호출하였을때 컨슈머에 직접적인 정보가 보여지지는 않으나, 서버의 로그파일에 들어가보니 해당 헤더가 저장된것을
+볼 수 있다.
+
+추가로 Consumer에서 해당 헤더를 받기위해서 `@Header` 어노테이션을 사용해서 받을 수 있으며 여러개일 경우
+`@Headers MessageHeaders` 를 사용하여 한번에 가져올 수 있다.
