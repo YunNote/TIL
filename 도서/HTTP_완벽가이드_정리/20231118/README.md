@@ -24,3 +24,16 @@ HTTP는 어떠한 언어로된 콘텐츠, 이미지, 동영상 혹은 다른 종
 
 따라서 서버는 클라이언트에게 문서의 문자와 언어를 HTTP Content-Type charset 매개변수와 Content-Language헤더를 통해 알려준다.
 
+```http request
+Accept-Language: fr, en; q=0.8
+Accept-Charset: iso-8859-1, utf-8
+```
+
+위는 프랑스어에 q=1.0(default), 영어에는 q=0.8을 주어 프랑스어를 선호하지만 피치 못할 경우에는 영어도 사용한다는 의미가 된다.
+
+---
+
+
+## 문자집합과 HTTP
+
+
