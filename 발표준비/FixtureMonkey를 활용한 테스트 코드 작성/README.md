@@ -1,6 +1,6 @@
-#  Fixture를 활용한 테스트코드 작성, 그런데 🙉 `FixtureMonkey`를 곁들인...  
+#  Fixture를 활용한 테스트코드 작성, 그런데 🙉 `FixtureMonkey`를 곁들인...   
 
-안녕하세요. <br>
+안녕하세요.  😀<br>
 올리브영 트랜잭션개발팀에서 백엔드 개발을 하고 있는 윤노트입니다.
 
 이번 글에서는 테스트 코드를 작성하면서 사용하게되는 Fixture에 대한 설명과 어떻게 사용하여 
@@ -20,23 +20,22 @@
 
 ---
 
-## 🤔 왜 Fixture 를 사용하는데? 어떻게 사용하는데?
+## 🤔 Fixture 어떻게 사용하고 있는데?
 
 테스트 코드를 작성하면서 <b>한.번.쯤</b>은 누구나 테스트용 객체를 어떻게 구성해야 할지.<br>
 어떻게 데이터를 넣어여 재사 및 운영할때 좋은 객체가 생성될지 고민을 해보셨을거라고 생각합니다.
 
-이러한 고민을 해결해주기 위한 방법으로는 
-기본적으로 우리가 생각할 수 있는 `생성자를 통해 만드는 방식`과 대표적으로 유명한 `Test Data Builder 패턴`과 `Object Mother 패턴`이 있습니다
+이러한 고민을 해결해주기 위한 방법으로는 `생성자를 통해 생성하는 방식`, `패턴을 활용하는 방식`, `JSON 파일로 만들어놓고 ObjectMapper를 통해 불러오는 방식` 등등 
+ 다양한 방식을 활용하여 객체를 사용할 수 있습니다.
 
-> 1. 직접 생성자를 통해 직접 값을 넣어 테스트 객체 생성 .
-> 2. Test Data Builder 패턴을 활용한 테스트 객체 생성. 
-> 3. Object Mother 패턴을 활용한 테스트 객체 생성.[]()
+여러가지 방식중 <b>파트너스쿼드</b> 에서는 `Test Data Builder 패턴`과 `Object Mother 패턴` 을 활용한 방식과, `JSON 파일을 Object로 변환`하는 방식을 활용하여 
+테스트 코드를 사용하였었습니다.
 
 <br>
 
 ---
 
-## 🛠️ 직접 생성자를 통해 Fixture 생성 
+## 🛠️ 직접 생성자를 통해 Fixture 생성 방법
 
 > 말그대로 사용하는 테스트 시점에 생성하거나, @BeforeAll 또는 @BeforeEach 를 통하여 테스트 시작 전에 생성할 수 있다. 
 
@@ -57,7 +56,7 @@ public class SampleTest {
 
         final String expectName = "윤노트";
         final int age = 32;
-        final String intro = "\uD83E\uDDD1\u200D\uD83D\uDCBB";
+        final String intro = "🧑‍💻";
         final User actual = UserFixture.createUser();
 
         Assertions.assertAll(
@@ -71,7 +70,7 @@ public class SampleTest {
 
 ---
 
-## 🛠️ Test Data Builder 패턴을 통해 Fixture 생성
+## 🛠️ Test Data Builder 패턴과 Object Mother 패턴을  통해 Fixture 생성
 
 > Builder를 직접 구현하여 편의메서드를 만들거나, Lombok에서 제공하는 @Builder를 사용하여 구성 하는 방법도 있습니다.
 
@@ -168,7 +167,7 @@ void builderTypeTest() {
 
     final String expectName = "윤노트";
     final int age = 32;
-    final String intro = "\uD83E\uDDD1\u200D\uD83D\uDCBB";
+    final String intro = "🧑‍💻";
     final User actual = UserFixture.createUser();
 
     Assertions.assertAll(
@@ -185,7 +184,7 @@ void lombokBuilderTypeTest () {
 
     final String expectName = "윤노트";
     final int age = 32;
-    final String intro = "\uD83E\uDDD1\u200D\uD83D\uDCBB";
+    final String intro = "🧑‍💻";
     final User actual = UserFixture.createUser();
 
     Assertions.assertAll(
@@ -196,3 +195,51 @@ void lombokBuilderTypeTest () {
 }
 ```
 </details>
+
+<br>
+
+---
+
+## 🤔 기존방식에서 변경하려는 이유
+
+파트너스쿼드에서 사용하고 있던 JSON to Object 방식과 직접 객체를생성해주는 방식을 사용하던중 `Fixture Monkey` 를 찾게 되었고 아래와 같은 이유로 변경을 하게 되었습니다.
+
+1. 유연성 부족 및 코드 동기화 어려움.
+   > API에 대해서 테스트 코드 작성 후 API의 응답 형식 및 API 자체가 변경될 경우 테스트 코드도 함께 수정이 필요하다. 또한 빠르게 API를 수정하다 보니 테스트 코드를 수정하지 못하여 동기화가 되지 못하는 경우.
+
+2. 개발자가 개발 하고 테스트 코드를 작성하다보니 놓치게 되는 엣지케이스.
+   > 테스트 코드를 미리 작업하고 API를 작성하면 좋지만 그렇지 못한 경우 API를 작성한 후 테스트 코드를 작성하다보니 <br> 
+   > 이미 나의 뇌가 어떻게 데이터를 넣어야 에러가 안나는지 학습해버려서 .. 엣지케이스를 놓치는 경우..
+
+3. 다양한 테스트 객체를 생성하여 테스트 커버리즈를 높이기 위해 오히려 복잡해지는 코드.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+⬜⬛⬛⬜⬜⬜⬜⬜⬜⬛⬛⬛⬜⬜⬜⬛⬛⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜⬛
+⬛⬛⬜⬜⬛⬛⬛⬛⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬜⬜⬜⬛⬜⬜⬜⬛⬜⬜⬛⬛⬛⬛⬛⬛
+⬛⬜⬜⬛⬛⬛⬛⬛⬛⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜⬛⬜⬜⬛⬛⬛⬛⬜⬜
+⬛⬜⬜⬛⬛⬛⬜⬜⬜⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬛⬜⬛⬜⬜⬛⬜⬜⬜⬜⬜⬛⬜⬜
+⬛⬜⬜⬛⬛⬛⬛⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬛⬛⬜⬜
+⬛⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬛⬛⬛⬛
+⬜⬛⬛⬜⬜⬜⬜⬜⬜⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜⬛
+⬜⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛
+⬛⬛⬜⬜⬜⬜⬜⬜⬛⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬜⬜⬜⬜⬜⬛⬜⬜⬜⬜⬜⬜⬛⬛
+⬛⬜⬜⬛⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬛⬛⬛⬛⬜⬜⬛⬛⬛⬜⬜⬛
+⬛⬜⬜⬛⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬛⬜⬜⬛⬜⬜⬛⬛⬛⬛⬛⬛⬜⬜⬛⬛⬛⬜⬜⬛
+⬛⬜⬜⬛⬛⬛⬛⬜⬜⬛⬜⬜⬜⬛⬜⬜⬜⬛⬜⬜⬜⬜⬜⬛⬛⬛⬜⬜⬛⬛⬜⬜⬜⬛
+⬛⬜⬜⬛⬛⬛⬛⬜⬜⬛⬛⬜⬜⬜⬜⬜⬛⬛⬜⬜⬛⬛⬛⬛⬛⬛⬜⬜⬜⬜⬜⬛⬛⬛
+⬛⬜⬜⬛⬛⬛⬛⬜⬜⬛⬛⬛⬜⬜⬜⬛⬛⬛⬜⬜⬛⬛⬛⬛⬛⬛⬜⬜⬛⬜⬜⬜⬛⬛
+⬛⬛⬜⬜⬜⬜⬜⬜⬛⬛⬜⬛⬛⬜⬛⬛⬜⬛⬜⬜⬜⬜⬜⬜⬜⬛⬜⬜⬛⬛⬜⬜⬜⬛
+⬜⬛⬛⬛⬛⬛⬛⬛⬛⬜⬜⬜⬛⬛⬛⬜⬜⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛
