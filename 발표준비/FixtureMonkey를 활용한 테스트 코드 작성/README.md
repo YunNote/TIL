@@ -76,10 +76,97 @@ public class SampleTest {
 
 아래와 같이 직접 구현하면 필요한 부분에 대해서는 편의메서드로 직접 생성하여 사용할 수 있습니다.  대부분 Stub
 
-<details>
- <summary> <b style="font-size: 18px;">User 코드</b> </summary>
+[//]: # ()
+[//]: # (<details>)
 
-## User.class
+[//]: # ( <summary> <b style="font-size: 18px;">User 코드</b> </summary>)
+
+[//]: # ()
+[//]: # (## User.class)
+
+[//]: # (```java)
+
+[//]: # (/** User.class */)
+
+[//]: # (@Getter)
+
+[//]: # (@Builder)
+
+[//]: # (public class User {)
+
+[//]: # ()
+[//]: # (    private String name;)
+
+[//]: # (    private int age;)
+
+[//]: # (    private String intro;)
+
+[//]: # ()
+[//]: # (    private User &#40;UserBuilder userBuilder&#41; {)
+
+[//]: # (        this.name = userBuilder.name;)
+
+[//]: # (        this.age = userBuilder.age;)
+
+[//]: # (        this.intro = userBuilder.intro;)
+
+[//]: # (    })
+
+[//]: # ()
+[//]: # (    public static class UserBuilder {)
+
+[//]: # ()
+[//]: # (        private String name;)
+
+[//]: # (        private int age;)
+
+[//]: # (        private String intro;)
+
+[//]: # ()
+[//]: # (        public UserBuilder name&#40;String name&#41; {)
+
+[//]: # (            this.name = name;)
+
+[//]: # (            return this;)
+
+[//]: # (        })
+
+[//]: # ()
+[//]: # (        public UserBuilder age&#40;int age&#41; {)
+
+[//]: # (            this.age = age;)
+
+[//]: # (            return this;)
+
+[//]: # (        })
+
+[//]: # ()
+[//]: # (        public UserBuilder intro&#40;String intro &#41; {)
+
+[//]: # (            this.intro = intro;)
+
+[//]: # (            return this;)
+
+[//]: # (        })
+
+[//]: # ()
+[//]: # (        public User build&#40;&#41; {)
+
+[//]: # (            return new User&#40;this&#41;;)
+
+[//]: # (        })
+
+[//]: # (    })
+
+[//]: # (})
+
+[//]: # ()
+[//]: # (```)
+
+[//]: # (</details>)
+
+### User 코드
+
 ```java
 /** User.class */
 @Getter
@@ -124,13 +211,60 @@ public class User {
 }
 
 ```
-</details>
 
 
-<details>
- <summary> <b style="font-size: 18px;">UserFixture 코드</b> </summary>
+[//]: # (<details>)
 
-## UserFixture.class
+[//]: # ( <summary> <b style="font-size: 18px;">UserFixture 코드</b> </summary>)
+
+[//]: # ()
+[//]: # (## UserFixture.class)
+
+[//]: # (```java)
+
+[//]: # (public class UserFixture {)
+
+[//]: # (    public static User createUser&#40;&#41; {)
+
+[//]: # (        // 직접 작성한 Builder )
+
+[//]: # (        return new User.UserBuilder&#40;&#41;)
+
+[//]: # (                .name&#40;"윤노트"&#41;)
+
+[//]: # (                .age&#40;32&#41;)
+
+[//]: # (                .intro&#40;"🧑‍💻"&#41;)
+
+[//]: # (                .build&#40;&#41;;)
+
+[//]: # (    })
+
+[//]: # ()
+[//]: # (    public static User createUserBuilderType&#40;&#41; {)
+
+[//]: # (        // Lombok을 사용한 Builder)
+
+[//]: # (        return User.builder&#40;&#41;)
+
+[//]: # (                .name&#40;"윤노트"&#41;)
+
+[//]: # (                .age&#40;32&#41;)
+
+[//]: # (                .intro&#40;"🧑‍💻"&#41;)
+
+[//]: # (                .build&#40;&#41;;)
+
+[//]: # (    })
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # (</details>)
+
+### UserFixture 코드
+
 ```java
 public class UserFixture {
     public static User createUser() {
@@ -152,13 +286,82 @@ public class UserFixture {
     }
 }
 ```
-</details>
 
 
-<details>
- <summary> <b style="font-size: 18px;">테스트 코드</b> </summary>
+### 테스트 코드
 
-## Test.class
+[//]: # (<details>)
+
+[//]: # ( <summary> <b style="font-size: 18px;">테스트 코드</b> </summary>)
+
+[//]: # ()
+[//]: # (## Test.class)
+
+[//]: # (```java)
+
+[//]: # ()
+[//]: # (@DisplayName&#40;"[User] 직접 구현한 Builder Test"&#41; // Success)
+
+[//]: # (@Test)
+
+[//]: # (void builderTypeTest&#40;&#41; {)
+
+[//]: # ()
+[//]: # (    final String expectName = "윤노트";)
+
+[//]: # (    final int age = 32;)
+
+[//]: # (    final String intro = "🧑‍💻";)
+
+[//]: # (    final User actual = UserFixture.createUser&#40;&#41;;)
+
+[//]: # ()
+[//]: # (    Assertions.assertAll&#40;)
+
+[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;expectName, actual.getName&#40;&#41;&#41;,)
+
+[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;age, actual.getAge&#40;&#41;&#41;,)
+
+[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;intro, actual.getIntro&#40;&#41;&#41;)
+
+[//]: # (    &#41;;)
+
+[//]: # ()
+[//]: # (})
+
+[//]: # ()
+[//]: # (@DisplayName&#40;"[User] Lombok Builder Test"&#41; // Success)
+
+[//]: # (@Test)
+
+[//]: # (void lombokBuilderTypeTest &#40;&#41; {)
+
+[//]: # ()
+[//]: # (    final String expectName = "윤노트";)
+
+[//]: # (    final int age = 32;)
+
+[//]: # (    final String intro = "🧑‍💻";)
+
+[//]: # (    final User actual = UserFixture.createUser&#40;&#41;;)
+
+[//]: # ()
+[//]: # (    Assertions.assertAll&#40;)
+
+[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;expectName, actual.getName&#40;&#41;&#41;,)
+
+[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;age, actual.getAge&#40;&#41;&#41;,)
+
+[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;intro, actual.getIntro&#40;&#41;&#41;)
+
+[//]: # (    &#41;;)
+
+[//]: # (})
+
+[//]: # (```)
+
+[//]: # (</details>)
+
 ```java
 
 @DisplayName("[User] 직접 구현한 Builder Test") // Success
@@ -194,7 +397,6 @@ void lombokBuilderTypeTest () {
     );
 }
 ```
-</details>
 
 <br>
 
