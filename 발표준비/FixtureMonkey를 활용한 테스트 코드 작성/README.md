@@ -424,8 +424,9 @@ void lombokBuilderTypeTest () {
 
 <br>
 
-## 기존 Fixture들을 바꿔보자! 🙉 Fixture Monkey 두두등장 
+## 기존 Fixture를 바꿔보자! 🙉 Fixture Monkey 두두등장
 
+[Fixture Monkey 공식 사이트](https://naver.github.io/fixture-monkey/v1-0-0/)
 
 
 
