@@ -426,14 +426,87 @@ void lombokBuilderTypeTest () {
 
 ## 기존 Fixture를 바꿔보자! 🙉 Fixture Monkey 두두등장
 
-[Fixture Monkey 공식 사이트](https://naver.github.io/fixture-monkey/v1-0-0/)
+> [Fixture Monkey 공식 사이트](https://naver.github.io/fixture-monkey/v1-0-0/)
+> 
+> Fixture Monkey는 2023.11.10일에 정식 1.0.0 버전이 Release 되었습니다.
+> 
+> `Java & Kotlin library for automatically generating reusable and controllable, arbitrary test fixtures`
+> Fixture Monkey의 공식 홈체이지 대문에 걸려있는 글입니다.
+> 
+> `재사용 가능하고 복잡한 임의의 테스트 Fixture를 자동으로 생성해주는 Java&Kotlin 라이브러리`라고 나와있습니다.
+>
+> 또한 자바 표준 Bean Validation 1.0(JSR-303), Bean Validation 2.0 (JSR-380) 어노테이션을 사용하여 객체를 생성하기 때문에
+> 전용 어노테이션이 추가로 필요하지가 않다는 장점이 있는것 같습니다.
+
+<br>
+
+---
+
+<br>
 
 
+## ✍️ 편한건 알았으니 이제 사용해보자!
+
+> 해당 라이브러리를 추가하는 것은 Github에 너무 잘나와있기 때문에 적용하였다고 가정하고 진행하겠습니다.
+
+사용법은 간단합니다. 사용하고자 하는 코드에 `FixtureMonkey.create()`를 사용하여 쉽게 시작할 수 있습니다.
+
+```java
+@Test
+void FixtureMonkeySample() {
+    final int MAX_SIZE = 5;
+    FixtureMonkey fixtureMonkey = FixtureMonkey.create();
+
+    List<User> users = fixtureMonkey.giveMe(User.class, MAX_SIZE);
+
+    Assertions.assertEquals(users.size(), MAX_SIZE); // Passed
+}
+```
+![img_2.png](img_2.png)
+
+<br>
+
+#### 위 사진은 실제 코드를 디버깅모드로 실행하였을때의 데이터 결과 값입니다.
+#### `users` 변수를 확인해보면 랜덤하게 생성된 size 5의 컬렉션을 반환한것을 확인할 수 있습니다. 또한 각각 index에 해당하는 row에
+#### FixtureMonkey가 랜덤한 값들을 넣어준것을 확인할 수 있습니다.
+ 
+<br>
+
+해당 코드는 Builder를 통해 생성되는 특정 Field의 데이터 값을 고정하거나, Arbitraries를 사용하여 특정 범위의 값만 넣도록 설정한 예입니다.
+`age`의 경우 10  100사이의 값만 넣으라는 내용입니다. 우측 사진처럼 각 index의 데이터의 age가 10 이상 100 이하인것을 확인할 수 있습니다.
+
+```java
+@Test
+void FixtureMonkeySample() {
+    final int MAX_SIZE = 5;
+    FixtureMonkey fixtureMonkey = FixtureMonkey.create();
+
+    List<User> users = fixtureMonkey.giveMeBuilder(User.class)
+            .set("age" , Arbitraries.integers().between(10, 100))
+            .sampleList(MAX_SIZE);
+
+    Assertions.assertEquals(users.size(), MAX_SIZE);
+}
+```
+![img_3.png](img_3.png)
+
+>  🔥🔥 만약 직접 테스트해보기 위해 User.class를 생성하여 돌렸더니 실행이 안되거나 데이터가 만들어지지 않는다면 Getter, Setter를 추가해주시기 바랍니다. 해당 내용은 아래에서 한번더 다루겠습니다.
+
+<br>
+
+---
+
+<br>
+
+## ❓ 파트너 스쿼드에서는 어떻게 적용하였을까 ❓
+
+> 1. 데이터 생성 전략을 FieldReflectionArbitraryIntrospector 설정
+> 2. 기존 Fixture 생성 방식 FixtureMonkey로 변경 
+> 3. 재사용 가능한 부분에 대해서는 Util로 변경
 
 
+--- 
 
+### 데이터 기본 생성 전략 변경 
 
-
-
-
-
+> FixtureMonkey에서는 
