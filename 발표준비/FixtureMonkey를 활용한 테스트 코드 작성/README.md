@@ -508,5 +508,33 @@ void FixtureMonkeySample() {
 --- 
 
 ### 데이터 기본 생성 전략 변경 
+[Fixture Monkey 인스턴스 생성 방법](https://naver.github.io/fixture-monkey/v1-0-0/docs/generating-objects/introspector/#constructorpropertiesarbitraryintrospector)
+> FixtureMonkey 의 기본 생성 방식은 `BeanArbitraryIntrospector` 입니다 .
 
-> FixtureMonkey에서는 
+<br>
+
+### ⭐ BeanArbitraryIntrospector
+> BeanArbitraryIntrospector 방식은 리플렉션과 Setter 메서드를 사용하여 객체를 생성하기 때문에 생성하고자 하는 클래스에 `기본생성자`와 `Setter`가 있어야 합니다.
+> 
+> 파트너 스쿼드의 코드에서는 GET 방식의 Request Class를 제외한 나머지 클래스에는 Setter를 사용하지 않기 때문에 기본 생성방식을 사용하지 않았습니다.
+
+<br>
+
+### ⭐ ConstructorPropertiesArbitraryIntrospector
+> ConstructorPropertiesArbitraryIntrospector 방식은 이름 그대로 생성자를 이용한 생성방식입니다.
+
+<br>
+
+### ⭐ FieldReflectionArbitraryIntrospector
+> FieldReflectionArbitraryIntrospector는 리플렉션 방식을 이용하여 인스턴스를 생성하고 필드에 값을 설정한다. <br>
+> 따라서 기본생성자와 getter 또는 setter가 있어야 한다. 라고 설명이 되어있지만 실제 테스트시 Getter, Setter가 구현되어있지 않고 기본생성자만 있어도 생성이 된다.
+
+
+### ⭐ BuilderArbitraryIntrospector
+
+
+
+### ⭐ FailoverArbitraryIntrospector
+
+
+
