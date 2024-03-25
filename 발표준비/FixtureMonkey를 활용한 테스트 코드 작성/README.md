@@ -290,77 +290,6 @@ public class UserFixture {
 
 ### 테스트 코드
 
-[//]: # (<details>)
-
-[//]: # ( <summary> <b style="font-size: 18px;">테스트 코드</b> </summary>)
-
-[//]: # ()
-[//]: # (## Test.class)
-
-[//]: # (```java)
-
-[//]: # ()
-[//]: # (@DisplayName&#40;"[User] 직접 구현한 Builder Test"&#41; // Success)
-
-[//]: # (@Test)
-
-[//]: # (void builderTypeTest&#40;&#41; {)
-
-[//]: # ()
-[//]: # (    final String expectName = "윤노트";)
-
-[//]: # (    final int age = 32;)
-
-[//]: # (    final String intro = "🧑‍💻";)
-
-[//]: # (    final User actual = UserFixture.createUser&#40;&#41;;)
-
-[//]: # ()
-[//]: # (    Assertions.assertAll&#40;)
-
-[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;expectName, actual.getName&#40;&#41;&#41;,)
-
-[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;age, actual.getAge&#40;&#41;&#41;,)
-
-[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;intro, actual.getIntro&#40;&#41;&#41;)
-
-[//]: # (    &#41;;)
-
-[//]: # ()
-[//]: # (})
-
-[//]: # ()
-[//]: # (@DisplayName&#40;"[User] Lombok Builder Test"&#41; // Success)
-
-[//]: # (@Test)
-
-[//]: # (void lombokBuilderTypeTest &#40;&#41; {)
-
-[//]: # ()
-[//]: # (    final String expectName = "윤노트";)
-
-[//]: # (    final int age = 32;)
-
-[//]: # (    final String intro = "🧑‍💻";)
-
-[//]: # (    final User actual = UserFixture.createUser&#40;&#41;;)
-
-[//]: # ()
-[//]: # (    Assertions.assertAll&#40;)
-
-[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;expectName, actual.getName&#40;&#41;&#41;,)
-
-[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;age, actual.getAge&#40;&#41;&#41;,)
-
-[//]: # (            &#40;&#41; -> Assertions.assertEquals&#40;intro, actual.getIntro&#40;&#41;&#41;)
-
-[//]: # (    &#41;;)
-
-[//]: # (})
-
-[//]: # (```)
-
-[//]: # (</details>)
 
 ```java
 
@@ -531,7 +460,61 @@ void FixtureMonkeySample() {
 
 
 ### ⭐ BuilderArbitraryIntrospector
+> BuilderArbitraryIntrospector는 빌더 방식을 이용하여 인스턴스를 생성하고 필드에 값을 설정한다. <br>
+> Lombok @Builder를 사용하여 사용가능하며, Lombok을 사용하지 않는경우 `builder`, `build` 이름을 갖는 메서드를 생성해주면
+> 정상적으로 데이터가 설정되어 객체가 생성되는것을 확인할 수 있다.
 
+
+<details>
+
+ <summary> <b style="font-size: 18px;">직접 Builder 구현하는 경우</b> </summary>
+
+```java
+public class User{
+
+    private Long id;
+    private String name;
+    private int age;
+
+    private User(Long id, String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+    }
+
+    public static class Builder {
+        private Long id;
+        private String name;
+        private int age;
+
+        Builder id(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+        Builder age(int age) {
+            this.age = age;
+            return this;
+        }
+
+        // 해당 이름(build)이 아니라면 생성되지 않음.
+        User build() {
+            return new User(this.id, this.name, this.age);
+        }
+    }
+
+    // 해당 이름(builder)이 아니라면 생성되지 않음.
+    static Builder builder() {
+        return new Builder();
+    }
+}
+```
+
+</details>
 
 
 ### ⭐ FailoverArbitraryIntrospector
