@@ -353,9 +353,8 @@ void lombokBuilderTypeTest () {
 
 <br>
 
-## 기존 Fixture를 바꿔보자! 🙉 Fixture Monkey 두두등장
-
-> [Fixture Monkey 공식 사이트](https://naver.github.io/fixture-monkey/v1-0-0/)
+## 기존 Fixture를 바꿔보자! [🙉 Fixture Monkey]((https://naver.github.io/fixture-monkey/v1-0-0/)) 두두등장
+![img_4.png](img_4.png)
 > 
 > Fixture Monkey는 2023.11.10일에 정식 1.0.0 버전이 Release 되었습니다.
 > 
@@ -442,27 +441,27 @@ void FixtureMonkeySample() {
 
 <br>
 
-### ⭐ BeanArbitraryIntrospector
+### ⭐ [BeanArbitraryIntrospector](https://naver.github.io/fixture-monkey/v1-0-0/docs/generating-objects/introspector/#beanarbitraryintrospector)
 > BeanArbitraryIntrospector 방식은 리플렉션과 Setter 메서드를 사용하여 객체를 생성하기 때문에 생성하고자 하는 클래스에 `기본생성자`와 `Setter`가 있어야 합니다.
-> 
-> 파트너 스쿼드의 코드에서는 GET 방식의 Request Class를 제외한 나머지 클래스에는 Setter를 사용하지 않기 때문에 기본 생성방식을 사용하지 않았습니다.
+
 
 <br>
 
-### ⭐ ConstructorPropertiesArbitraryIntrospector
+### ⭐ [ConstructorPropertiesArbitraryIntrospector](https://naver.github.io/fixture-monkey/v1-0-0/docs/generating-objects/introspector/#constructorpropertiesarbitraryintrospector)
 > ConstructorPropertiesArbitraryIntrospector 방식은 이름 그대로 생성자를 이용한 생성방식입니다.
 
 <br>
 
-### ⭐ FieldReflectionArbitraryIntrospector
+### ⭐ [FieldReflectionArbitraryIntrospector](https://naver.github.io/fixture-monkey/v1-0-0/docs/generating-objects/introspector/#fieldreflectionarbitraryintrospector)
 > FieldReflectionArbitraryIntrospector는 리플렉션 방식을 이용하여 인스턴스를 생성하고 필드에 값을 설정한다. <br>
-> 따라서 기본생성자와 getter 또는 setter가 있어야 한다. 라고 설명이 되어있지만 실제 테스트시 Getter, Setter가 구현되어있지 않고 기본생성자만 있어도 생성이 된다.
+> 따라서 기본생성자와 getter 또는 setter가 있어야 한다. 라고 설명이 되어있지만 실제 테스트시 Getter, Setter가 구현되어있지 않고 기본생성자만 있어도 생성이 됩니다.
 
+<br>
 
-### ⭐ BuilderArbitraryIntrospector
+### ⭐ [BuilderArbitraryIntrospector](https://naver.github.io/fixture-monkey/v1-0-0/docs/generating-objects/introspector/#builderarbitraryintrospector)
 > BuilderArbitraryIntrospector는 빌더 방식을 이용하여 인스턴스를 생성하고 필드에 값을 설정한다. <br>
 > Lombok @Builder를 사용하여 사용가능하며, Lombok을 사용하지 않는경우 `builder`, `build` 이름을 갖는 메서드를 생성해주면
-> 정상적으로 데이터가 설정되어 객체가 생성되는것을 확인할 수 있다.
+> 정상적으로 데이터가 설정되어 객체가 생성되는것을 확인할 수 있수있습니다.
 
 
 <details>
@@ -516,8 +515,83 @@ public class User{
 
 </details>
 
+<br>
 
-### ⭐ FailoverArbitraryIntrospector
+
+
+### ⭐ [FailoverArbitraryIntrospector](https://naver.github.io/fixture-monkey/v1-0-0/docs/generating-objects/introspector/#failoverarbitraryintrospector)
+>  테스트 코드를 작성하다보면 작성된 코드의 객체 생성방식이 모두 달라 단일로는 생성이 되지 않는 경우가 발생할 수 있습니다.
+> 
+> 그런 경우 `FailoverArbitraryIntrospector`를 사용하여 여러개의 생성방식을 지정할 수 있습니다.
+
+---
+
+파트너스쿼드에서는 Request, Response 클래스 및 엔티티의 경우에도 모두 사용 가능하게끔 하나의 Utils 파일로 만들어 사용하기 위해 
+`FailoverArbitraryIntrospector` 을 사용하였으며 해당 내용에 아래와 같이 추가하여 사용하였습니다.
+
+```java
+public class FixtureUtils {
+    public static FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
+            .objectIntrospector(new FailoverIntrospector(
+                    Arrays.asList(
+                            FieldReflectionArbitraryIntrospector.INSTANCE,
+                            BeanArbitraryIntrospector.INSTANCE,
+                            BuilderArbitraryIntrospector.INSTANCE
+                    )
+            ))
+            
+            // FixtureMonkey의 대입값에 null 허용하지 않음.
+            .defaultNotNull(true)
+            .build();
+}
+```
+
+<br>
+
+---
+
+<br>
+
+## 💭 정리 
+
+> 테스트코드를 작성하는 분들이라면 `🙉 FixtureMonkey`를 사용해보시는것을 추천드립니다. <br>
+> 테스트 코드를 작성하는 것은 매우 중요하다는것을 모두 알고있지만, 업무를 보다보면 시간이 부족하거나, 테스트 객체를 작성하는것이 귀찮기 때문에 다음에 작성해야지!!
+> 라고 넘어가는 분들도 많을것이라고 생각됩니다.  <br>
+> 
+> 이러한 문제에 대해서 FixtureMonkey는 대부분의 사람들이 쉽게 사용할 수 있는 도구라고 생각이 되며, 간단한 몇줄의 코드로 
+> 다양한 테스트 케이스에 대해서 생성해 낼 수 있어 테스트 코드의 신뢰도가 올라갈것으로 생각되며 코드의 양도 많지 않아보다 깔끔하고 가독성 좋은 
+> 객체를 생성해 낸다는 큰 장점이 있다고 생각합니다.
+
+## 테스트 객체 생성에 스트레스를 받거나 귀찮아서 안하고 계신분들이라면 한번쯤 꼭 써보시는것을 추천합니다.!!! 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
