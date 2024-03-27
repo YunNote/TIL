@@ -47,7 +47,6 @@ public class SampleTest {
 
     @BeforeAll
     static void setup() {
-        System.out.println(1);
         user = new User(/* name */ "윤노트",  /* age */ 32,  /* intro */"🧑‍💻");
     }
 
