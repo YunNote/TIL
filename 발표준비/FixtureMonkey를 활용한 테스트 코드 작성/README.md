@@ -460,6 +460,9 @@ void FixtureMonkeySample() {
 ### ⭐ [FieldReflectionArbitraryIntrospector](https://naver.github.io/fixture-monkey/v1-0-0/docs/generating-objects/introspector/#fieldreflectionarbitraryintrospector)
 > FieldReflectionArbitraryIntrospector는 리플렉션 방식을 이용하여 인스턴스를 생성하고 필드에 값을 설정한다. <br>
 > 따라서 기본생성자와 getter 또는 setter가 있어야 한다. 라고 설명이 되어있지만 실제 테스트시 Getter, Setter가 구현되어있지 않고 기본생성자만 있어도 생성이 됩니다.
+> 
+> 단, final이 아닌 가변 객체에 대해서는 @Getter, @Setter가 없는 경우도 생성이 된다고 합니다!<br>
+> https://github.com/naver/fixture-monkey/issues/961#issuecomment-2021906200
 
 <br>
 
