@@ -58,11 +58,9 @@ public class SampleTest {
         final String intro = "🧑‍💻";
         final User actual = UserFixture.createUser();
 
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(expectName, actual.getName()),
-                () -> Assertions.assertEquals(age, actual.getAge()),
-                () -> Assertions.assertEquals(intro, actual.getIntro())
-        );
+        assertThat(actual.getName()).isEqualTo(expectName);
+        assertThat(actual.getAge()).isEqualTo(age);
+        assertThat(actual.getIntro()).isEqualTo(intro);
     }
 }
 ```
@@ -156,37 +154,34 @@ public class UserFixture {
 
 ```java
 
-@DisplayName("[User] 직접 구현한 Builder Test") // Success
+@DisplayName("[User] 직접 구현한 Builder Test")
 @Test
 void builderTypeTest() {
 
     final String expectName = "윤노트";
     final int age = 32;
     final String intro = "🧑‍💻";
+    
+    // 직접 구현한 Builder
     final User actual = UserFixture.createUser();
 
-    Assertions.assertAll(
-            () -> Assertions.assertEquals(expectName, actual.getName()),
-            () -> Assertions.assertEquals(age, actual.getAge()),
-            () -> Assertions.assertEquals(intro, actual.getIntro())
-    );
-
+    assertThat(actual.getName()).isEqualTo(expectName);
+    assertThat(actual.getAge()).isEqualTo(age);
+    assertThat(actual.getIntro()).isEqualTo(intro);
 }
 
-@DisplayName("[User] Lombok Builder Test") // Success
+@DisplayName("[User] Lombok Builder Test") 
 @Test
 void lombokBuilderTypeTest () {
 
     final String expectName = "윤노트";
     final int age = 32;
     final String intro = "🧑‍💻";
+    
+    // Lombok을 통해 구현
     final User actual = UserFixture.createUser();
 
-    Assertions.assertAll(
-            () -> Assertions.assertEquals(expectName, actual.getName()),
-            () -> Assertions.assertEquals(age, actual.getAge()),
-            () -> Assertions.assertEquals(intro, actual.getIntro())
-    );
+    // .. 검증 생략 위와 동일
 }
 ```
 
@@ -255,7 +250,7 @@ void FixtureMonkeySample() {
 
     List<User> users = fixtureMonkey.giveMe(User.class, MAX_SIZE);
 
-    Assertions.assertEquals(users.size(), MAX_SIZE); // Passed
+    assertThat(users).hasSize(MAX_SIZE);
 }
 ```
 ![img_2.png](img_2.png)
@@ -281,7 +276,8 @@ void FixtureMonkeySample() {
             .set("age" , Arbitraries.integers().between(10, 100))
             .sampleList(MAX_SIZE);
 
-    Assertions.assertEquals(users.size(), MAX_SIZE);
+    assertThat(users).hasSize(MAX_SIZE);
+    assertThat(actual.get(0).getAge()).isBetween(10, 100);
 }
 ```
 ![img_3.png](img_3.png)
@@ -417,7 +413,7 @@ FixtureMonkey 를 사용하면 몇줄의 코드로 정상케이스, 엣지케이
 아래와 같이 공통 Util 클래스로 생성하여 공통 설정을 기준으로 작성하도록 하였습니다.
 
 ```java
-public class FixtureUtils {
+public class FixtureCommon {
     
     /** 
      * 테스트코드를 작성하는 메서드에서 호출하여 사용할 수 있도록 static Field로 구성
@@ -445,8 +441,8 @@ public class FixtureUtils {
 (설명을 위해 간단한 예를 들었습니다.)
 
 ```java
-public class FixtureUtils {
-    ...
+public class FixtureCommon {
+    // ...
 
     private static ArbitraryBuilder<User> fixName() {
         return fixtureMonkey.giveMeBuilder(User.class)
@@ -469,23 +465,20 @@ public class FixtureUtils {
 
 ```java
 @Test
-void FixtureMonkeyReusabilityAge32Sample() throws IOException {
+void FixtureMonkeyReusabilityAge32Sample() {
 
-    User actual = FixtureMonkeyUtils.age32YunNote();
-    Assertions.assertAll(
-            () -> Assertions.assertEquals("윤노트", actual.getName()),
-            () -> Assertions.assertEquals(32, actual.getAge())
-    );
+    User actual = FixtureCommon.age32YunNote();
+
+    assertThat(actual.getName()).isEqualTo("윤노트");
+    assertThat(actual.getAge()).isEqualTo(32);
 }
 
 @Test
-void FixtureMonkeyReusabilityAge33Sample() throws IOException {
-    User actual = FixtureMonkeyUtils.age33YunNote();
+void FixtureMonkeyReusabilityAge33Sample() {
+    User actual = FixtureCommon.age33YunNote();
 
-    Assertions.assertAll(
-            () -> Assertions.assertEquals("윤노트", actual.getName()),
-            () -> Assertions.assertEquals(33, actual.getAge())
-    );
+    assertThat(actual.getName()).isEqualTo("윤노트");
+    assertThat(actual.getAge()).isEqualTo(33);
 }
 ```
 
