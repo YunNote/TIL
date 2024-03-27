@@ -74,98 +74,9 @@ public class SampleTest {
 
 > Builder를 직접 구현하여 편의메서드를 만들거나, Lombok에서 제공하는 @Builder를 사용하여 구성 하는 방법도 있습니다.
 
-아래와 같이 직접 구현하면 필요한 부분에 대해서는 편의메서드로 직접 생성하여 사용할 수 있습니다.  대부분 Stub
+아래와 같이 직접 구현하면 필요한 부분에 대해서는 편의메서드로 직접 생성하여 사용할 수 있습니다.
 
-[//]: # ()
-[//]: # (<details>)
-
-[//]: # ( <summary> <b style="font-size: 18px;">User 코드</b> </summary>)
-
-[//]: # ()
-[//]: # (## User.class)
-
-[//]: # (```java)
-
-[//]: # (/** User.class */)
-
-[//]: # (@Getter)
-
-[//]: # (@Builder)
-
-[//]: # (public class User {)
-
-[//]: # ()
-[//]: # (    private String name;)
-
-[//]: # (    private int age;)
-
-[//]: # (    private String intro;)
-
-[//]: # ()
-[//]: # (    private User &#40;UserBuilder userBuilder&#41; {)
-
-[//]: # (        this.name = userBuilder.name;)
-
-[//]: # (        this.age = userBuilder.age;)
-
-[//]: # (        this.intro = userBuilder.intro;)
-
-[//]: # (    })
-
-[//]: # ()
-[//]: # (    public static class UserBuilder {)
-
-[//]: # ()
-[//]: # (        private String name;)
-
-[//]: # (        private int age;)
-
-[//]: # (        private String intro;)
-
-[//]: # ()
-[//]: # (        public UserBuilder name&#40;String name&#41; {)
-
-[//]: # (            this.name = name;)
-
-[//]: # (            return this;)
-
-[//]: # (        })
-
-[//]: # ()
-[//]: # (        public UserBuilder age&#40;int age&#41; {)
-
-[//]: # (            this.age = age;)
-
-[//]: # (            return this;)
-
-[//]: # (        })
-
-[//]: # ()
-[//]: # (        public UserBuilder intro&#40;String intro &#41; {)
-
-[//]: # (            this.intro = intro;)
-
-[//]: # (            return this;)
-
-[//]: # (        })
-
-[//]: # ()
-[//]: # (        public User build&#40;&#41; {)
-
-[//]: # (            return new User&#40;this&#41;;)
-
-[//]: # (        })
-
-[//]: # (    })
-
-[//]: # (})
-
-[//]: # ()
-[//]: # (```)
-
-[//]: # (</details>)
-
-### User 코드
+### @Builder를 사용한 User 코드
 
 ```java
 /** User.class */
@@ -182,27 +93,31 @@ public class User {
         this.age = userBuilder.age;
         this.intro = userBuilder.intro;
     }
+}
+
+```
+
+### 직접구현한 Builder를 사용하는  User 코드
+
+```java
+/** User.class */
+@Getter
+public class User {
+
+    // 필드 생략
+    //...
+
+    private User (UserBuilder userBuilder) {
+        //...
+    }
 
     public static class UserBuilder {
 
-        private String name;
-        private int age;
-        private String intro;
+        // 필드 생략
+        //... 
 
-        public UserBuilder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public UserBuilder age(int age) {
-            this.age = age;
-            return this;
-        }
-
-        public UserBuilder intro(String intro ) {
-            this.intro = intro;
-            return this;
-        }
+        // 메서드 생략
+        // ...
 
         public User build() {
             return new User(this);
@@ -211,57 +126,6 @@ public class User {
 }
 
 ```
-
-
-[//]: # (<details>)
-
-[//]: # ( <summary> <b style="font-size: 18px;">UserFixture 코드</b> </summary>)
-
-[//]: # ()
-[//]: # (## UserFixture.class)
-
-[//]: # (```java)
-
-[//]: # (public class UserFixture {)
-
-[//]: # (    public static User createUser&#40;&#41; {)
-
-[//]: # (        // 직접 작성한 Builder )
-
-[//]: # (        return new User.UserBuilder&#40;&#41;)
-
-[//]: # (                .name&#40;"윤노트"&#41;)
-
-[//]: # (                .age&#40;32&#41;)
-
-[//]: # (                .intro&#40;"🧑‍💻"&#41;)
-
-[//]: # (                .build&#40;&#41;;)
-
-[//]: # (    })
-
-[//]: # ()
-[//]: # (    public static User createUserBuilderType&#40;&#41; {)
-
-[//]: # (        // Lombok을 사용한 Builder)
-
-[//]: # (        return User.builder&#40;&#41;)
-
-[//]: # (                .name&#40;"윤노트"&#41;)
-
-[//]: # (                .age&#40;32&#41;)
-
-[//]: # (                .intro&#40;"🧑‍💻"&#41;)
-
-[//]: # (                .build&#40;&#41;;)
-
-[//]: # (    })
-
-[//]: # (})
-
-[//]: # (```)
-
-[//]: # (</details>)
 
 ### UserFixture 코드
 
@@ -471,6 +335,7 @@ void FixtureMonkeySample() {
 > Lombok @Builder를 사용하여 사용가능하며, Lombok을 사용하지 않는경우 `builder`, `build` 이름을 갖는 메서드를 생성해주면
 > 정상적으로 데이터가 설정되어 객체가 생성되는것을 확인할 수 있수있습니다.
 
+![img_9.png](img_9.png)
 
 <details>
 
@@ -479,9 +344,8 @@ void FixtureMonkeySample() {
 ```java
 public class User{
 
-    private Long id;
-    private String name;
-    private int age;
+    // 필드 생략 
+    // ...
 
     private User(Long id, String name, int age) {
         this.id = id;
@@ -490,23 +354,11 @@ public class User{
     }
 
     public static class Builder {
-        private Long id;
-        private String name;
-        private int age;
+        // 필드 생략 
+        // ...
 
-        Builder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-        Builder age(int age) {
-            this.age = age;
-            return this;
-        }
+        // 메서드 생략
+        // ...
 
         // 해당 이름(build)이 아니라면 생성되지 않음.
         User build() {
