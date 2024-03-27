@@ -409,7 +409,7 @@ FixtureMonkey 를 사용하면 몇줄의 코드로 정상케이스, 엣지케이
 >`Define complex specifications once and reuse them! Configurations of instances can be reused across multiple tests.`<br><br>
 > FixtureMonkey의 장점중 하나인 Reusability입니다. 메인화면에서 강조하는것처럼 복잡한 구조를 한번 정리하여 다수의 테스트에서 재사용할 수 있다.
 
-첫번째는 Utils 클래스로 변경하는 내용입니다. 각자 해당 객체를 사용하다보니 사용하는 사람마다 설정 및 사용방법이 달라 테스트코드를 수정하는데 있어 불편함이 있기 때문입니다 . 
+첫번째는 Common(Util) 클래스로 변경하는 내용입니다. 각자 해당 객체를 사용하다보니 사용하는 사람마다 설정 및 사용방법이 달라 테스트코드를 수정하는데 있어 불편함이 있기 때문입니다 . 
 아래와 같이 공통 Util 클래스로 생성하여 공통 설정을 기준으로 작성하도록 하였습니다.
 
 ```java
@@ -420,17 +420,17 @@ public class FixtureCommon {
      * FixtureMonkeyUtils.fixtureMonkey;`와 같이 공통 설정에 대해서 사용하도록 합니다.
      */
     public static FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
-            .objectIntrospector(new FailoverIntrospector(
-                    Arrays.asList(
-                            FieldReflectionArbitraryIntrospector.INSTANCE,
-                            BeanArbitraryIntrospector.INSTANCE,
-                            BuilderArbitraryIntrospector.INSTANCE
-                    )
-            ))
-            
-            // FixtureMonkey의 대입값에 null 허용하지 않음.
-            .defaultNotNull(true)
-            .build();
+        .objectIntrospector(new FailoverIntrospector(
+            Arrays.asList(
+                FieldReflectionArbitraryIntrospector.INSTANCE,
+                BeanArbitraryIntrospector.INSTANCE,
+                BuilderArbitraryIntrospector.INSTANCE
+            )
+        ))
+        
+        // FixtureMonkey의 대입값에 null 허용하지 않음.
+        .defaultNotNull(true)
+        .build();
 }
 ```
 
