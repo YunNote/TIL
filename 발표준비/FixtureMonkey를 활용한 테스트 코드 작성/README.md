@@ -355,6 +355,9 @@ void lombokBuilderTypeTest () {
 
 ## 기존 Fixture를 바꿔보자! [🙉 Fixture Monkey]((https://naver.github.io/fixture-monkey/v1-0-0/)) 두두등장
 ![img_4.png](img_4.png)
+
+![img_6.png](img_6.png)
+
 > 
 > Fixture Monkey는 2023.11.10일에 정식 1.0.0 버전이 Release 되었습니다.
 > 
@@ -365,6 +368,8 @@ void lombokBuilderTypeTest () {
 >
 > 또한 자바 표준 Bean Validation 1.0(JSR-303), Bean Validation 2.0 (JSR-380) 어노테이션을 사용하여 객체를 생성하기 때문에
 > 전용 어노테이션이 추가로 필요하지가 않다는 장점이 있는것 같습니다.
+
+
 
 <br>
 
@@ -426,7 +431,7 @@ void FixtureMonkeySample() {
 
 <br>
 
-## ❓ 파트너 스쿼드에서는 어떻게 적용하였을까 ❓
+## ❓ 파트너 스쿼드에서는 어떻게 적용하였을까
 
 > 1. 데이터 생성 전략을 FailoverArbitraryIntrospector 설정
 > 2. 기존 Fixture 생성 방식 FixtureMonkey로 변경 
@@ -549,20 +554,21 @@ FixtureMonkey 를 사용하면 몇줄의 코드로 정상케이스, 엣지케이
 
 <br>
 
-## ♻️ Utils 정리 및 재사용성 구성 
+## ♻️ Utils 클래스 변경 및 재사용성 구성 
 
-<div style="display: grid; grid-template-columns: 2fr 6fr ">
-    <img src="./img_5.png" width="140px">
-    <p style="font-size: 18px">FixtureMonkey의 장점중 하나인 Reusability입니다. <br> 메인화면에서 강조하는것처럼 복잡한 구조를 한번 정리하여 다수의 테스트에서 재사용할 수 있다.</p>
-</div>
+>`Define complex specifications once and reuse them! Configurations of instances can be reused across multiple tests.`<br><br>
+> FixtureMonkey의 장점중 하나인 Reusability입니다. 메인화면에서 강조하는것처럼 복잡한 구조를 한번 정리하여 다수의 테스트에서 재사용할 수 있다.
 
-
-> 
-
-테스트 메서드 필드에서도 사용이 가능하나 테스트 코드를 작성하면 
+첫번째는 Utils 클래스로 변경하는 내용입니다. 각자 해당 객체를 사용하다보니 사용하는 사람마다 설정 및 사용방법이 달라 테스트코드를 수정하는데 있어 불편함이 있기 때문입니다 . 
+아래와 같이 공통 Util 클래스로 생성하여 공통 설정을 기준으로 작성하도록 하였습니다.
 
 ```java
 public class FixtureUtils {
+    
+    /** 
+     * 테스트코드를 작성하는 메서드에서 호출하여 사용할 수 있도록 static Field로 구성
+     * FixtureMonkeyUtils.fixtureMonkey;`와 같이 공통 설정에 대해서 사용하도록 합니다.
+     */
     public static FixtureMonkey fixtureMonkey = FixtureMonkey.builder()
             .objectIntrospector(new FailoverIntrospector(
                     Arrays.asList(
@@ -575,33 +581,77 @@ public class FixtureUtils {
             // FixtureMonkey의 대입값에 null 허용하지 않음.
             .defaultNotNull(true)
             .build();
-    
-    public 
 }
 ```
+
+<br>
+두번째는 재사용 가능한 객체들에 대한 정의 입니다. 해당 예제는 실제 코드가 아닌 샘플 코드입니다.
+
+`이름은 윤노트인데 나이만 32살, 33살로 구성하여 테스트 코드를 작성`과 같은 간단한 예를 들겠습니다.<br>
+(설명을 위해 간단한 예를 들었습니다.)
+
+```java
+public class FixtureUtils {
+    ...
+
+    private static ArbitraryBuilder<User> fixName() {
+        return fixtureMonkey.giveMeBuilder(User.class)
+                .set("name", "윤노트");
+    }
+
+    public static User age32YunNote() {
+        return fixName()
+                .set("age", 32)
+                .sample();
+    }
+
+    public static User age33YunNote() {
+        return fixName()
+                .set("age", 33)
+                .sample();
+    }
+}
+```
+
+```java
+@Test
+void FixtureMonkeyReusabilityAge32Sample() throws IOException {
+
+    User actual = FixtureMonkeyUtils.age32YunNote();
+    Assertions.assertAll(
+            () -> Assertions.assertEquals("윤노트", actual.getName()),
+            () -> Assertions.assertEquals(32, actual.getAge())
+    );
+}
+
+@Test
+void FixtureMonkeyReusabilityAge33Sample() throws IOException {
+    User actual = FixtureMonkeyUtils.age33YunNote();
+
+    Assertions.assertAll(
+            () -> Assertions.assertEquals("윤노트", actual.getName()),
+            () -> Assertions.assertEquals(33, actual.getAge())
+    );
+}
+```
+
+위와 같이 ArbitraryBuiler를 사용하여 구성하는 부분을 재사용하여 특정 필드들만 set하여 사용할 수 있습니다. <br>
 
 <br>
 
 ---
 
-
-
-<br>
-
 ## 💭 정리 
 
 > 테스트코드를 작성하는 분들이라면 `🙉 FixtureMonkey`를 사용해보시는것을 추천드립니다. <br>
 > 테스트 코드를 작성하는 것은 매우 중요하다는것을 모두 알고있지만, 업무를 보다보면 시간이 부족하거나, 테스트 객체를 작성하는것이 귀찮기 때문에 다음에 작성해야지!!
-> 라고 넘어가는 분들도 많을것이라고 생각됩니다.  <br>
-> 
-> 이러한 문제에 대해서 FixtureMonkey는 대부분의 사람들이 쉽게 사용할 수 있는 도구라고 생각이 되며, 간단한 몇줄의 코드로 
-> 다양한 테스트 케이스에 대해서 생성해 낼 수 있어 테스트 코드의 신뢰도가 올라갈것으로 생각되며 코드의 양도 많지 않아보다 깔끔하고 가독성 좋은 
+> 라고 넘어가는 분들도 많을것이라고 생각됩니다.  <br> 이러한 문제에 대해서 FixtureMonkey는 대부분의 사람들이 쉽게 사용할 수 있는 도구라고 생각이 되며, 간단한 몇줄의 코드로
+> 다양한 테스트 케이스에 대해서 생성해 낼 수 있어 테스트 코드의 신뢰도가 올라갈것으로 생각되며 코드의 양도 많지 않아보다 깔끔하고 가독성 좋은
 > 객체를 생성해 낸다는 큰 장점이 있다고 생각합니다.
-
-## 테스트 객체 생성에 스트레스를 받거나 귀찮아서 안하고 계신분들이라면 한번쯤 꼭 써보시는것을 추천합니다.!!! 
-
-
-
+> 
+> 실제로 파트너스쿼드에서 약 500개 이상의 테스트코드를 FixtureMonkey를 사용하였으며 테스트에 필요한 관심 필드들을
+> 명시적으로 표현함으로 Fixture를 생성하는 시간을 줄일 수 있었으며, 엣지케이스들을 통해 미쳐 발견하지 못한 케이스들에 대해서도
+> 작성할 수 있었습니다.
 
 
 
