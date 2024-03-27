@@ -428,14 +428,14 @@ void FixtureMonkeySample() {
 
 ## ❓ 파트너 스쿼드에서는 어떻게 적용하였을까 ❓
 
-> 1. 데이터 생성 전략을 FieldReflectionArbitraryIntrospector 설정
+> 1. 데이터 생성 전략을 FailoverArbitraryIntrospector 설정
 > 2. 기존 Fixture 생성 방식 FixtureMonkey로 변경 
-> 3. 재사용 가능한 부분에 대해서는 Util로 변경
+> 3. ♻️ 재사용 가능한 부분에 대해서는 Util로 변경
 
 
 --- 
 
-### 데이터 기본 생성 전략 변경 
+## 데이터 기본 생성 전략 변경 
 [Fixture Monkey 인스턴스 생성 방법](https://naver.github.io/fixture-monkey/v1-0-0/docs/generating-objects/introspector/#constructorpropertiesarbitraryintrospector)
 > FixtureMonkey 의 기본 생성 방식은 `BeanArbitraryIntrospector` 입니다 .
 
@@ -524,10 +524,42 @@ public class User{
 > 
 > 그런 경우 `FailoverArbitraryIntrospector`를 사용하여 여러개의 생성방식을 지정할 수 있습니다.
 
+<br>
+
 ---
 
-파트너스쿼드에서는 Request, Response 클래스 및 엔티티의 경우에도 모두 사용 가능하게끔 하나의 Utils 파일로 만들어 사용하기 위해 
-`FailoverArbitraryIntrospector` 을 사용하였으며 해당 내용에 아래와 같이 추가하여 사용하였습니다.
+<br>
+
+## 기존 Fixture 생성 방식 FixtureMonkey로 변경한 이유 
+
+기존 파트너오피스 스쿼드에 작성된 테스트코드는 `test/resources` 하위에 도메인별 fixture에 해당하는 json파일들을 구성해 놓고 파일을 읽어 ObjectMapper를 통해
+객체로 변환하여 사용하였습니다.
+
+하지만 json파일의 경우 변환하고자 하는 클래스에 필드가 없지만 json파일안에 해당 키가 있다면 변환시 ObjectMapper에서  `UnrecognizedPropertyException`을 발생시켜
+JSON 파일의 구조가 변경되면 해당 구조를 반영하기 위해 모델 클래스를 업데이트해야 합니다. <br>
+다만 ```new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);``` 설정을 추가하면 변환할 수 있다.
+
+또한 다양한 케이스에 대해서 테스트하기 위해서는 json 파일들을 케이스마다 하나씩 만들어줘야했으며 개발자입장에서 엣지케이스를 테스트하는데 불편함이 있었습니다.
+
+FixtureMonkey 를 사용하면 몇줄의 코드로 정상케이스, 엣지케이스들을 쉽게 생성 및 재사용 가능하기때문에 변경하게 되었습니다.
+
+<br>
+
+---
+
+<br>
+
+## ♻️ Utils 정리 및 재사용성 구성 
+
+<div style="display: grid; grid-template-columns: 2fr 6fr ">
+    <img src="./img_5.png" width="140px">
+    <p style="font-size: 18px">FixtureMonkey의 장점중 하나인 Reusability입니다. <br> 메인화면에서 강조하는것처럼 복잡한 구조를 한번 정리하여 다수의 테스트에서 재사용할 수 있다.</p>
+</div>
+
+
+> 
+
+테스트 메서드 필드에서도 사용이 가능하나 테스트 코드를 작성하면 
 
 ```java
 public class FixtureUtils {
@@ -543,12 +575,16 @@ public class FixtureUtils {
             // FixtureMonkey의 대입값에 null 허용하지 않음.
             .defaultNotNull(true)
             .build();
+    
+    public 
 }
 ```
 
 <br>
 
 ---
+
+
 
 <br>
 
